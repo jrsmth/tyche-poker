@@ -1,4 +1,4 @@
-package com.tyche.poker;
+package com.tyche.poker0;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
