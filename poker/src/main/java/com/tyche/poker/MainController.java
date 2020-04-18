@@ -77,6 +77,8 @@ public class MainController {
         newUser.setUuid(uuid);
         newUser.setName(name.substring(5));
         newUser.setChips(1000);
+        newUser.setCard0("null");
+        newUser.setCard1("null");
         userRepository.save(newUser);
 
         // when a new user is added, we want to update the view of users already in the game
@@ -97,13 +99,7 @@ public class MainController {
     @GetMapping(path="/startGame")
     public @ResponseBody String startGame(){
         deleteAllTables();
-        PokerTable table = new PokerTable();
-        table.setPot(0);
-        table.setUuid(UUID.randomUUID().toString());
-        table.setFlop0(new Card().toString());
-        pokerTableRepository.save(table);
-        updateState();
-        // need to push these changes to the "room" views
+        newRoundSetUp();
         return "Let the Hunger Games begin!";
     }
 
@@ -178,6 +174,31 @@ public class MainController {
         // trigger all open "room" perspectives to refresh
         // trigger refresh at the "room" level, regardless of of UUID
     }
+
+
+    public void newRoundSetUp(){
+        PokerTable table = new PokerTable();
+        table.setPot(0);
+        table.setUuid(UUID.randomUUID().toString());
+        table.setFlop0(new Card().toString());
+        pokerTableRepository.save(table);
+
+        Iterable<User> currentUsersIterable = getAllUsers();
+        List<User> currentUsers = StreamSupport.stream(currentUsersIterable.spliterator(), false).collect(Collectors.toList());
+
+        for(User user : currentUsers){
+            user.setCard0((new Card()).toString());
+            userRepository.save(user);
+        }
+
+        updateState();
+        // need to push these changes to the "room" views
+
+
+    }
+
+
+
 
 
 }
