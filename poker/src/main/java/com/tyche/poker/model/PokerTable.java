@@ -14,6 +14,7 @@ public class PokerTable {
     private String flop2;
     private String turn;
     private String river;
+    private int currentBet;
 
 
     public String getUuid() {
@@ -72,5 +73,11 @@ public class PokerTable {
         this.river = river;
     }
 
+    public int getCurrentBet() {
+        return currentBet;
+    }
 
+    public void setCurrentBet(int currentBet) {
+        this.currentBet = currentBet;
+    }
 }

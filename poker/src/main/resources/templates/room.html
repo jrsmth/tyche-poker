@@ -1,5 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <style>
+        .myTurn{
+            display: none
+        }
+
+
+    </style>
+
     <head>
         <title> Tyche </title>
     </head>
@@ -9,13 +18,51 @@
 
     <p id="thisUser" th:text="${thisUser.getName()}"> </p>
 
+    <p id="thisUuid" th:text="${thisUser.getUuid()}" style="display: none"> </p>
+
     <p th:text="${thisUser.getChips()}"> </p>
 
     <p th:text="${thisUser.getCard0()}"> </p>
 
     <p th:text="${thisUser.getCard1()}"> </p>
 
+    <p id="isMyTurn" th:text="${thisUser.isMyTurn()}"> </p>
+
     <p> hi there :) </p>
+
+    <br>
+    <br>
+
+    <h1 class="myTurn"> My Turn </h1>
+
+    <form class="myTurn" action="/makeTurn" method="post">
+        <input type="hidden" class="check" name="action" value="check">
+        <input type="hidden" class="check" name="betValue" value="null">
+        <input type="hidden" class="check uuid" name="uuid" value="">
+        <input type="submit" value="check">
+    </form>
+
+    <form class="myTurn" action="/makeTurn" method="post">
+        <input type="hidden" class="call" name="action" value="call">
+        <input type="hidden" class="call" name="betValue" value="null">
+        <input type="hidden" class="call uuid" name="uuid" value="">
+        <input type="submit" value="call">
+    </form>
+
+    <form class="myTurn" action="/makeTurn" method="post">
+        <input type="hidden" class="raise" name="action" value="raise">
+        <input type="hidden" class="raise" name="betValue" value="10">
+        <input type="hidden" class="raise uuid" name="uuid" value="">
+        <input type="submit" value="raise">
+    </form>
+
+    <form class="myTurn" action="/makeTurn" method="post">
+        <input type="hidden" class="fold" name="action" value="fold">
+        <input type="hidden" class="fold" name="betValue" value="10">
+        <input type="hidden" class="fold uuid" name="uuid" value="">
+        <input type="submit" value="fold">
+    </form>
+
 
     <br>
     <br>
@@ -26,6 +73,7 @@
         <div th:text="${table.getPot()}"></div>
         <div th:text="${table.getFlop0()}"></div>
         <div th:text="${table.getUuid()}"></div>
+        <div th:text="${table.getCurrentBet()}"></div>
     </div>
 
     <br>
@@ -42,6 +90,24 @@
         setTimeout(function () {
             window.location.reload(1);
         }, 5000);
+
+        var myTurn = document.getElementsByClassName("myTurn");
+
+        if(document.getElementById("isMyTurn").innerHTML == "true"){
+            for (let myTurnItem of myTurn) {
+                myTurnItem.style.display = "table";
+            }
+        }
+
+        var uuid = document.getElementById("thisUuid").innerHTML;
+        console.log(uuid);
+        var uuidList = document.getElementsByClassName("uuid");
+        for (let uuidItem of uuidList) {
+            uuidItem.value = uuid;
+        }
+
+
+
 
     </script>
 

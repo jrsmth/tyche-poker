@@ -186,6 +186,8 @@ public class MainController {
         Iterable<User> currentUsersIterable = getAllUsers();
         List<User> currentUsers = StreamSupport.stream(currentUsersIterable.spliterator(), false).collect(Collectors.toList());
 
+        currentUsers.get(0).setMyTurn(true); // first player always bet first, MVP
+
         for(User user : currentUsers){
             user.setCard0((new Card()).toString());
             userRepository.save(user);
@@ -195,7 +197,68 @@ public class MainController {
         // need to push these changes to the "room" views
 
 
+        // the next step (for STEP#2 is to place bets
+
     }
+
+
+    @PostMapping(path = "/makeTurn")
+    public void makeTurn(@RequestBody String uuid, @RequestBody String action, @RequestBody String betValue) {
+
+        // update the state of this user and that of the table
+        User thisUser = getUser(uuid);
+        thisUser.setMyTurn(false);
+
+        Iterable<PokerTable> thisTableIter = getAllTables();
+        List<PokerTable> thisTableList = StreamSupport.stream(thisTableIter.spliterator(), false).collect(Collectors.toList());
+        PokerTable thisTable = thisTableList.get(0);
+
+        switch(action){
+            case "fold":
+                thisUser.setFold(true);
+                break;
+            case "call":
+                thisUser.setMyBet(new PokerTable().getCurrentBet());
+                thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
+                thisTable.setCurrentBet(thisUser.getMyBet());
+                thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                break;
+            case "check":
+                thisUser.setMyBet(0);
+                break;
+            case "raise":
+                thisUser.setMyBet(Integer.getInteger(betValue));
+                thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
+                thisTable.setCurrentBet(thisUser.getMyBet());
+                thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+        }
+
+        // need to move the turn along to the next user...
+        Iterable<User> allUsersIter = getAllUsers();
+        List<User> allUsersList = StreamSupport.stream(allUsersIter.spliterator(), false).collect(Collectors.toList());
+        int index = allUsersList.indexOf(thisUser);
+        int len = allUsersList.size();
+        if (index == len){
+            // end of turn, last user has been
+            System.out.println("Need to end turn bitch!");
+        } else{
+            User nextUser = allUsersList.get(index + 1);
+            nextUser.setMyTurn(true);
+            userRepository.save(nextUser);
+        }
+
+        userRepository.save(thisUser);
+        pokerTableRepository.save(thisTable);
+
+
+        updateState();
+
+
+        // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
+        
+
+    }
+
 
 
 

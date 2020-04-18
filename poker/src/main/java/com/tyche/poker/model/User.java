@@ -12,6 +12,9 @@ public class User {
     private int chips;
     private String card0;
     private String card1;
+    private boolean myTurn;
+    private boolean fold;
+    private int myBet;
 
     public String getUuid() {
         return uuid;
@@ -52,5 +55,30 @@ public class User {
     public void setCard1(String card1) {
         this.card1 = card1;
     }
+
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+
+    public void setMyTurn(boolean myTurn) {
+        this.myTurn = myTurn;
+    }
+
+    public boolean isFold() {
+        return fold;
+    }
+
+    public void setFold(boolean fold) {
+        this.fold = fold;
+    }
+
+    public int getMyBet() {
+        return myBet;
+    }
+
+    public void setMyBet(int myBet) {
+        this.myBet = myBet;
+    }
+
 
 }
