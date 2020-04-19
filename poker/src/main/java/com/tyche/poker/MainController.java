@@ -3,12 +3,10 @@ package com.tyche.poker;
 import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -203,7 +201,16 @@ public class MainController {
 
 
     @PostMapping(path = "/makeTurn")
-    public void makeTurn(@RequestBody String uuid, @RequestBody String action, @RequestBody String betValue) {
+    public RedirectView makeTurn(@RequestBody String uuid_action_betValue) {
+
+        // extract uuid, action & betValue
+        // uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=raise&betValue=10
+        String uuid = uuid_action_betValue.substring(5,41);
+        String action = uuid_action_betValue.substring(49,53);
+        String betValue = uuid_action_betValue.substring(63);
+        System.out.println(uuid);
+        System.out.println(action);
+        System.out.println(betValue);
 
         // update the state of this user and that of the table
         User thisUser = getUser(uuid);
@@ -223,14 +230,15 @@ public class MainController {
                 thisTable.setCurrentBet(thisUser.getMyBet());
                 thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
                 break;
-            case "check":
+            case "chec":
                 thisUser.setMyBet(0);
                 break;
-            case "raise":
-                thisUser.setMyBet(Integer.getInteger(betValue));
+            case "rais":
+                thisUser.setMyBet(Integer.parseInt(betValue));
                 thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
                 thisTable.setCurrentBet(thisUser.getMyBet());
                 thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                break;
         }
 
         // need to move the turn along to the next user...
@@ -238,11 +246,11 @@ public class MainController {
         List<User> allUsersList = StreamSupport.stream(allUsersIter.spliterator(), false).collect(Collectors.toList());
         int index = allUsersList.indexOf(thisUser);
         int len = allUsersList.size();
-        if (index == len){
+        if (index == len - 1){ // index = len - 1
             // end of turn, last user has been
             System.out.println("Need to end turn bitch!");
         } else{
-            User nextUser = allUsersList.get(index + 1);
+            User nextUser = allUsersList.get(index + 1); // index = len - 1
             nextUser.setMyTurn(true);
             userRepository.save(nextUser);
         }
@@ -255,7 +263,9 @@ public class MainController {
 
 
         // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
-        
+        RedirectView rv = new RedirectView("/room");
+        rv.addStaticAttribute("uuid", uuid);
+        return rv;
 
     }
 

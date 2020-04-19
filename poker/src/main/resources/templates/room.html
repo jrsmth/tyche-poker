@@ -36,30 +36,30 @@
     <h1 class="myTurn"> My Turn </h1>
 
     <form class="myTurn" action="/makeTurn" method="post">
-        <input type="hidden" class="check" name="action" value="check">
-        <input type="hidden" class="check" name="betValue" value="null">
         <input type="hidden" class="check uuid" name="uuid" value="">
+        <input type="hidden" class="check" name="action" value="chec"> <!-- must be four char's -->
+        <input type="hidden" class="check" name="betValue" value="null">
         <input type="submit" value="check">
     </form>
 
     <form class="myTurn" action="/makeTurn" method="post">
+        <input type="hidden" class="call uuid" name="uuid" value="">
         <input type="hidden" class="call" name="action" value="call">
         <input type="hidden" class="call" name="betValue" value="null">
-        <input type="hidden" class="call uuid" name="uuid" value="">
         <input type="submit" value="call">
     </form>
 
     <form class="myTurn" action="/makeTurn" method="post">
-        <input type="hidden" class="raise" name="action" value="raise">
-        <input type="hidden" class="raise" name="betValue" value="10">
         <input type="hidden" class="raise uuid" name="uuid" value="">
+        <input type="hidden" class="raise" name="action" value="rais"> <!-- must be four char's -->
+        <input type="hidden" class="raise" name="betValue" value="10">
         <input type="submit" value="raise">
     </form>
 
     <form class="myTurn" action="/makeTurn" method="post">
-        <input type="hidden" class="fold" name="action" value="fold">
-        <input type="hidden" class="fold" name="betValue" value="10">
         <input type="hidden" class="fold uuid" name="uuid" value="">
+        <input type="hidden" class="fold" name="action" value="fold">
+        <input type="hidden" class="fold" name="betValue" value="null">
         <input type="submit" value="fold">
     </form>
 
