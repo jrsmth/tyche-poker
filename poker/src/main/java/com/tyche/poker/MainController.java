@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,12 +69,12 @@ public class MainController {
     }
 
 
-    @PostMapping(path = "/newUser")
+    @PostMapping(path = "/users")
     public RedirectView newUser(@RequestBody String name) {
         String uuid = UUID.randomUUID().toString();
         User newUser = new User();
         newUser.setUuid(uuid);
-        newUser.setName(name.substring(5));
+        newUser.setName(name.substring(6));
         newUser.setChips(1000);
         newUser.setCard0("null");
         newUser.setCard1("null");
@@ -94,7 +95,7 @@ public class MainController {
     }
 
 
-    @GetMapping(path="/startGame")
+    @GetMapping(path="/start")
     public @ResponseBody String startGame(){
         deleteAllTables();
         newRoundSetUp();
@@ -102,67 +103,45 @@ public class MainController {
     }
 
 
-    @GetMapping(path="/allUsers")
+    @GetMapping(path="/users")
     public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
 
-    @GetMapping(path="/deleteAllUsers")
+    @GetMapping(path="/users/delete")
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }
 
 
-    @GetMapping(path="/deleteUserByUuid")
-    public @ResponseBody String deleteUserByUuid(String uuid, String auth) {
-        if(auth.equals("god:god")){
-            User userToExecute = userRepository.findByUuid(uuid);
-            userRepository.delete(userToExecute);
-            updateState();
-            return "successfully wiped the user: " + uuid;
-        } else{
-            return "You do not have this power. Now that you know this API exists, I will have to kill you...";
-        }
-    }
-
-
-    @GetMapping(path="/deleteUserByName")
-    public @ResponseBody String deleteUserByName(String name, String auth) {
-        if(auth.equals("god:god")){
+    @GetMapping(path="/users/delete/{name}")
+    public @ResponseBody String deleteUserByName(@PathVariable String name) {
             User userToExecute = userRepository.findByName(name);
             userRepository.delete(userToExecute);
             updateState();
             return "successfully wiped the user: " + name;
-        } else{
-            return "You do not have this power. Now that you know this API exists, I will have to kill you...";
-        }
     }
 
 
-    @GetMapping(path="/allTables")
+    @GetMapping(path="/tables")
     public @ResponseBody Iterable<PokerTable> getAllTables() {
         return pokerTableRepository.findAll();
     }
 
 
-    @GetMapping(path="/resetTable")
+    @GetMapping(path="/tables/delete")
     public void deleteAllTables() {
         pokerTableRepository.deleteAll();
     }
 
 
     @GetMapping(path="/flood")
-    public @ResponseBody String flood(String auth){
-        System.out.println(auth);
-        if(auth.equals("god:god")){
+    public @ResponseBody String flood(){
             deleteAllUsers();
             deleteAllTables();
             updateState();
             return "successfully wiped the game";
-        } else{
-            return "You do not have this power. Now that you know this API exists, I will have to kill you...";
-        }
     }
 
 
@@ -200,7 +179,7 @@ public class MainController {
     }
 
 
-    @PostMapping(path = "/makeTurn")
+    @PostMapping(path = "/turn")
     public RedirectView makeTurn(@RequestBody String uuid_action_betValue) {
 
         // extract uuid, action & betValue
