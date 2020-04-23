@@ -15,6 +15,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.tyche.poker.Card.compareCards;
+
 @Controller // must be Controller (not RestController) for Thymeleaf...
 public class MainController {
 
@@ -174,8 +176,6 @@ public class MainController {
         // need to push these changes to the "room" views
 
 
-        // the next step (for STEP#2 is to place bets
-
     }
 
 
@@ -186,7 +186,7 @@ public class MainController {
         // uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=raise&betValue=10
         String uuid = uuid_action_betValue.substring(5,41);
         String action = uuid_action_betValue.substring(49,53);
-        String betValue = uuid_action_betValue.substring(63);
+        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
         System.out.println(uuid);
         System.out.println(action);
         System.out.println(betValue);
@@ -204,23 +204,58 @@ public class MainController {
                 thisUser.setFold(true);
                 break;
             case "call":
-                thisUser.setMyBet(new PokerTable().getCurrentBet());
-                thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
-                thisTable.setCurrentBet(thisUser.getMyBet());
-                thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                try {
+                    if((thisTable.getCurrentBet() != 0) && (thisUser.getChips() >= thisTable.getCurrentBet()) && (thisUser.getChips() - thisTable.getCurrentBet() >= 0)){
+                        thisUser.setMyBet(thisTable.getCurrentBet());
+                        thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
+                        thisTable.setCurrentBet(thisUser.getMyBet());
+                        thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                    } else {
+                        throw new Exception();
+                    }
+                } catch (Exception e) {
+                    thisUser.setMyTurn(true);
+                    RedirectView rv = new RedirectView("/turn/invalid");
+                    return rv;
+                }
                 break;
             case "chec":
-                thisUser.setMyBet(0);
+                    try {
+                        if(thisTable.getCurrentBet() == 0){
+                            thisUser.setMyBet(0);
+                        } else {
+                            throw new Exception();
+                        }
+                    } catch (Exception e) {
+                        thisUser.setMyTurn(true);
+                        RedirectView rv = new RedirectView("/turn/invalid");
+                        return rv;
+                    }
                 break;
             case "rais":
-                thisUser.setMyBet(Integer.parseInt(betValue));
-                thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
-                thisTable.setCurrentBet(thisUser.getMyBet());
-                thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                try {
+                    if(thisUser.getChips() - betValue >= 0){
+                        thisUser.setMyBet(betValue);
+                        thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
+                        thisTable.setCurrentBet(thisUser.getMyBet());
+                        thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                    } else {
+                        throw new Exception();
+                    }
+                } catch (Exception e) {
+                    thisUser.setMyTurn(true);
+                    RedirectView rv = new RedirectView("/turn/invalid");
+                    return rv;
+                }
                 break;
         }
 
+
+        pokerTableRepository.save(thisTable);
+
+
         // need to move the turn along to the next user...
+        boolean nextTurn = false;
         Iterable<User> allUsersIter = getAllUsers();
         List<User> allUsersList = StreamSupport.stream(allUsersIter.spliterator(), false).collect(Collectors.toList());
         int index = allUsersList.indexOf(thisUser);
@@ -228,6 +263,10 @@ public class MainController {
         if (index == len - 1){ // index = len - 1
             // end of turn, last user has been
             System.out.println("Need to end turn bitch!");
+            endTurn(thisTable);
+            User nextUser = allUsersList.get(0);
+            userRepository.save(nextUser);
+            nextTurn = true;
         } else{
             User nextUser = allUsersList.get(index + 1); // index = len - 1
             nextUser.setMyTurn(true);
@@ -235,10 +274,13 @@ public class MainController {
         }
 
         userRepository.save(thisUser);
-        pokerTableRepository.save(thisTable);
 
 
         updateState();
+
+        if (nextTurn){
+            newRoundSetUp();
+        }
 
 
         // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
@@ -246,6 +288,46 @@ public class MainController {
         rv.addStaticAttribute("uuid", uuid);
         return rv;
 
+    }
+
+
+    @GetMapping(path="/turn/invalid")
+    public String invalidTurn() {
+        return "invalidTurn.html";
+    }
+
+
+
+    public void endTurn(PokerTable thisTable){
+        // compare cards of non-folded users
+        Iterable<User> usersIter = getAllUsers();
+        List<User> usersList = StreamSupport.stream(usersIter.spliterator(), false).collect(Collectors.toList());
+        Card card = new Card();
+
+        // remove those who have folded
+        for (User user : usersList){
+            if (user.isFold()){
+                usersList.remove(user);
+            }
+        }
+
+        // what does each user have
+        for (User user : usersList){
+            System.out.println(user.getName());
+            System.out.println(user.getCard0());
+        }
+
+        List<User> winners = Card.compareCards(usersList);
+        for(User winner : winners){
+            winner.setChips(winner.getChips() + thisTable.getPot()/winners.size());
+        }
+
+
+
+
+        // dish out pot to the user with the highest card (split on draw)
+
+        // wipe db
     }
 
 
