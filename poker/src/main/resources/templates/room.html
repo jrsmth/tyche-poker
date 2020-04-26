@@ -63,6 +63,13 @@
         <input type="submit" value="fold">
     </form>
 
+    <form class="myTurn" action="/turn" method="post">
+        <input type="hidden" class="allin uuid" name="uuid" value="">
+        <input type="hidden" class="allin" name="action" value="alli"> <!-- must be four char's -->
+        <input type="hidden" class="allin" name="betValue" value="0">
+        <input type="submit" value="allin">
+    </form>
+
 
     <br>
     <br>
@@ -72,6 +79,10 @@
     <div th:each="table : ${tableState}">
         <div th:text="${table.getPot()}"></div>
         <div th:text="${table.getFlop0()}"></div>
+        <div th:text="${table.getFlop1()}"></div>
+        <div th:text="${table.getFlop2()}"></div>
+        <div th:text="${table.getTurn()}"></div>
+        <div th:text="${table.getRiver()}"></div>
         <div th:text="${table.getUuid()}"></div>
         <div th:text="${table.getCurrentBet()}"></div>
     </div>
@@ -89,7 +100,7 @@
     <script>
         setTimeout(function () {
             window.location.reload(1);
-        }, 5000);
+        }, 10000);
 
         var myTurn = document.getElementsByClassName("myTurn");
 

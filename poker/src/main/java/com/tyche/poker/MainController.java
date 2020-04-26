@@ -41,6 +41,10 @@ public class MainController {
         try{
             if (getUser(uuid) == null) throw new Exception();
             User thisUser = getUser(uuid);
+
+            //test to see if you have no chips!
+            if(thisUser.getChips() == 0 && thisUser.isMyTurn() == true) return "loser.html";
+
             Iterable<User> currentUsersIterable = getAllUsers();
             List<User> otherUsers = StreamSupport.stream(currentUsersIterable.spliterator(), false).collect(Collectors.toList());
             otherUsers.remove(thisUser); // filter out your user from the list of other users
@@ -159,7 +163,7 @@ public class MainController {
         PokerTable table = new PokerTable();
         table.setPot(0);
         table.setUuid(UUID.randomUUID().toString());
-        table.setFlop0(new Card().toString());
+        //table.setFlop0(new Card().toString()); -> no longer wanted...
         pokerTableRepository.save(table);
 
         Iterable<User> currentUsersIterable = getAllUsers();
@@ -187,9 +191,6 @@ public class MainController {
         String uuid = uuid_action_betValue.substring(5,41);
         String action = uuid_action_betValue.substring(49,53);
         int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
-        System.out.println(uuid);
-        System.out.println(action);
-        System.out.println(betValue);
 
         // update the state of this user and that of the table
         User thisUser = getUser(uuid);
@@ -248,6 +249,19 @@ public class MainController {
                     return rv;
                 }
                 break;
+            case "alli":
+                if(thisUser.getChips() > thisTable.getCurrentBet()){
+                    thisUser.setMyBet(thisUser.getChips());
+                    thisUser.setChips(0);
+                    thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+
+                    thisTable.setCurrentBet(thisUser.getMyBet());
+                } else {
+                    thisUser.setMyBet(thisUser.getChips());
+                    thisUser.setChips(0);
+                    thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
+                }
+                break;
         }
 
 
@@ -262,11 +276,42 @@ public class MainController {
         int len = allUsersList.size();
         if (index == len - 1){ // index = len - 1
             // end of turn, last user has been
-            System.out.println("Need to end turn bitch!");
-            endTurn(thisTable);
-            User nextUser = allUsersList.get(0);
-            userRepository.save(nextUser);
-            nextTurn = true;
+
+            // HERE BOYS!
+            // if all players have bet and flop == null, set flop and all bet again
+            // if all players have bet and turn == null, set turn and all bet again
+            // if all players have bet and river == null, set river and all bet again
+            // if all players have bet and river != null, end the turn!
+
+            if(thisTable.getFlop0() == null){
+                thisTable.setFlop0(new Card().toString());
+                thisTable.setFlop1(new Card().toString());
+                thisTable.setFlop2(new Card().toString());
+
+                User nextUser = allUsersList.get(0);
+                nextUser.setMyTurn(true);
+                userRepository.save(nextUser);
+                pokerTableRepository.save(thisTable);
+            } else if(thisTable.getTurn() == null){
+                thisTable.setTurn(new Card().toString());
+
+                User nextUser = allUsersList.get(0);
+                nextUser.setMyTurn(true);
+                userRepository.save(nextUser);
+                pokerTableRepository.save(thisTable);
+            } else if (thisTable.getRiver() == null){
+                thisTable.setRiver(new Card().toString());
+
+                User nextUser = allUsersList.get(0);
+                nextUser.setMyTurn(true);
+                userRepository.save(nextUser);
+                pokerTableRepository.save(thisTable);
+            } else if (thisTable.getRiver() != null){
+                endTurn(thisTable);
+                User nextUser = allUsersList.get(0);
+                userRepository.save(nextUser);
+                nextTurn = true;
+            }
         } else{
             User nextUser = allUsersList.get(index + 1); // index = len - 1
             nextUser.setMyTurn(true);
@@ -297,7 +342,6 @@ public class MainController {
     }
 
 
-
     public void endTurn(PokerTable thisTable){
         // compare cards of non-folded users
         Iterable<User> usersIter = getAllUsers();
@@ -311,24 +355,17 @@ public class MainController {
             }
         }
 
-        // what does each user have
-        for (User user : usersList){
-            System.out.println(user.getName());
-            System.out.println(user.getCard0());
-        }
-
+        // dish out pot to the user with the highest card (split on draw)
         List<User> winners = Card.compareCards(usersList);
         for(User winner : winners){
-            winner.setChips(winner.getChips() + thisTable.getPot()/winners.size());
+            int winnings = thisTable.getPot() / winners.size();
+            winner.setChips(winner.getChips() + winnings);
         }
 
-
-
-
-        // dish out pot to the user with the highest card (split on draw)
-
-        // wipe db
+        // wipe table db
+        pokerTableRepository.delete(thisTable);
     }
+
 
 
 

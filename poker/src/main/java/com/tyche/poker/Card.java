@@ -36,7 +36,7 @@ public class Card {
     Rank rank;
     Suit suit;
     static Map<String, Integer> stringToValue = new HashMap<String, Integer>() {{
-        put("TWO", 2;
+        put("TWO", 2);
         put("THREE", 3);
         put("FOUR", 4);
         put("FIVE", 5);
@@ -77,9 +77,28 @@ public class Card {
             // find the highest value
             // return all users with this value
 
+        ArrayList<User> topDogs = new ArrayList<>();
+        int highestRank = 0;
 
+        for(User user : userList){
+            String[] rankValueList = user.getCard0().split(", ");
+            int rank = stringToValue.get(rankValueList[0]);
+            if(rank > highestRank) { highestRank = rank; }
+            System.out.println("highest rank: " + highestRank);
+        }
 
-        return null;
+        for(User user:userList){
+            String[] rankValueList = user.getCard0().split(", ");
+            int rank = stringToValue.get(rankValueList[0]);
+            System.out.println("highest rank check: " + highestRank);
+            System.out.println("rank check: " + highestRank);
+            if(rank == highestRank) {
+                topDogs.add(user);
+                System.out.println("winner: " + user.getName());
+            }
+        }
+
+        return topDogs;
     }
 
 
