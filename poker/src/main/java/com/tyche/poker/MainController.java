@@ -234,8 +234,8 @@ public class MainController {
                     }
                 break;
             case "rais":
-                try {
-                    if(thisUser.getChips() - betValue >= 0){
+                try { // also need to add a rule: a raise must take your current bet for this betting turn to be >= the current table bet!
+                    if(thisUser.getChips() - betValue >= 0 ){
                         thisUser.setMyBet(betValue);
                         thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
                         thisTable.setCurrentBet(thisUser.getMyBet());
@@ -287,6 +287,7 @@ public class MainController {
                 thisTable.setFlop0(new Card().toString());
                 thisTable.setFlop1(new Card().toString());
                 thisTable.setFlop2(new Card().toString());
+                thisTable.setCurrentBet(0);
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
@@ -294,6 +295,7 @@ public class MainController {
                 pokerTableRepository.save(thisTable);
             } else if(thisTable.getTurn() == null){
                 thisTable.setTurn(new Card().toString());
+                thisTable.setCurrentBet(0);
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
@@ -301,6 +303,7 @@ public class MainController {
                 pokerTableRepository.save(thisTable);
             } else if (thisTable.getRiver() == null){
                 thisTable.setRiver(new Card().toString());
+                thisTable.setCurrentBet(0);
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
