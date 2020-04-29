@@ -187,7 +187,7 @@ public class MainController {
     public RedirectView makeTurn(@RequestBody String uuid_action_betValue) {
 
         // extract uuid, action & betValue
-        // uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=raise&betValue=10
+        // uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
         String uuid = uuid_action_betValue.substring(5,41);
         String action = uuid_action_betValue.substring(49,53);
         int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
@@ -234,8 +234,8 @@ public class MainController {
                     }
                 break;
             case "rais":
-                try { // also need to add a rule: a raise must take your current bet for this betting turn to be >= the current table bet!
-                    if(thisUser.getChips() - betValue >= 0 ){
+                try { // also need to add a rule: a raise must take your current bet for this betting turn to be > the current table bet!
+                    if(thisUser.getChips() - betValue >= 0 && betValue > thisTable.getCurrentBet()){
                         thisUser.setMyBet(betValue);
                         thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
                         thisTable.setCurrentBet(thisUser.getMyBet());
@@ -276,6 +276,20 @@ public class MainController {
         int len = allUsersList.size();
         if (index == len - 1){ // index = len - 1
             // end of turn, last user has been
+            // Hold on! does anyone need to bet again? (for each user, if bet < table bet and not folded, must bet again)
+
+            for(User user:allUsersList){
+                if(user.getMyBet() < thisTable.getCurrentBet() && user.isFold() == false){
+                    user.setMyTurn(true);
+                    // save and return to room (however how do we skip user's who don't need to bet again)
+                    userRepository.save(thisUser);
+                    updateState();
+                    // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
+                    RedirectView rv = new RedirectView("/room");
+                    rv.addStaticAttribute("uuid", uuid);
+                    return rv;
+                }
+            }
 
             // HERE BOYS!
             // if all players have bet and flop == null, set flop and all bet again
@@ -283,11 +297,14 @@ public class MainController {
             // if all players have bet and river == null, set river and all bet again
             // if all players have bet and river != null, end the turn!
 
-            if(thisTable.getFlop0() == null){
+            if(thisTable.getFlop0() == null ){
                 thisTable.setFlop0(new Card().toString());
                 thisTable.setFlop1(new Card().toString());
                 thisTable.setFlop2(new Card().toString());
                 thisTable.setCurrentBet(0);
+                for(User user:allUsersList){
+                    user.setMyBet(0);
+                }
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
@@ -296,6 +313,9 @@ public class MainController {
             } else if(thisTable.getTurn() == null){
                 thisTable.setTurn(new Card().toString());
                 thisTable.setCurrentBet(0);
+                for(User user:allUsersList){
+                    user.setMyBet(0);
+                }
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
@@ -304,6 +324,9 @@ public class MainController {
             } else if (thisTable.getRiver() == null){
                 thisTable.setRiver(new Card().toString());
                 thisTable.setCurrentBet(0);
+                for(User user:allUsersList){
+                    user.setMyBet(0);
+                }
 
                 User nextUser = allUsersList.get(0);
                 nextUser.setMyTurn(true);
@@ -311,13 +334,20 @@ public class MainController {
                 pokerTableRepository.save(thisTable);
             } else if (thisTable.getRiver() != null){
                 endTurn(thisTable);
+                for(User user:allUsersList){
+                    user.setMyBet(0);
+                }
                 User nextUser = allUsersList.get(0);
                 userRepository.save(nextUser);
                 nextTurn = true;
             }
         } else{
-            User nextUser = allUsersList.get(index + 1); // index = len - 1
+            // Re-raise: if the nextUser has has currentBet > 0 and currentBet >= table bet, skip 'em
+            User nextUser = allUsersList.get(index + 1);
             nextUser.setMyTurn(true);
+            if (nextUser.getMyBet() > 0 && nextUser.getMyBet() >= thisTable.getCurrentBet()){
+                makeTurn("uuid="+nextUser.getUuid()+"&action=null&betValue=0"); // dud call!
+            }
             userRepository.save(nextUser);
         }
 
@@ -368,8 +398,6 @@ public class MainController {
         // wipe table db
         pokerTableRepository.delete(thisTable);
     }
-
-
 
 
 
