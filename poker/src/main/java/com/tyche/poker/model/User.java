@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name="game_user")
+@Table(name="game_user") // User is reserved in POSTGRESQL
 public class User {
 
     @Id

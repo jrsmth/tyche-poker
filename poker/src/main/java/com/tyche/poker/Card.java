@@ -1,7 +1,9 @@
 package com.tyche.poker;
 
+import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
 
+import java.lang.reflect.Array;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -70,7 +72,7 @@ public class Card {
 
 
     // STEP #2: which card is highest
-    public static List<User> compareCards(List<User> userList){
+    public static List<User> compareCardz(List<User> userList){
 
         // find highest value, return the user(s) with this value
             // sort userList based on stringToValue[user.getCard01()] <- need to extract the rank!
@@ -97,6 +99,30 @@ public class Card {
                 System.out.println("winner: " + user.getName());
             }
         }
+
+        return topDogs;
+    }
+
+
+    // STEP #3: which hand is best
+    public static List<User> compareCards(List<User> userList, PokerTable thisTable){
+
+        // out of all the hands, where user has not folded, which hand(s) win
+        // return the users with that hand(s)
+
+        // what are the hands? 7 cards (table + user)
+        ArrayList<String[]> userHands = new ArrayList<>();
+        for (User user : userList){
+            String[] thisHand = {user.getCard0(), user.getCard1(), thisTable.getFlop0(), thisTable.getFlop1(), thisTable.getFlop2(), thisTable.getTurn(), thisTable.getRiver()};
+            userHands.add(thisHand);
+        }
+
+        // go through each hand, which hand is highest - remember index
+        //      if two hands are equal, add both indices
+        //              if you find a new highest card, wipe previous indices
+        
+
+
 
         return topDogs;
     }

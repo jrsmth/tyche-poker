@@ -55,17 +55,17 @@
 			</exclusions>
 		</dependency>
 
-<!--		<dependency> &lt;!&ndash; localhost &ndash;&gt;-->
-<!--			<groupId>mysql</groupId>-->
-<!--			<artifactId>mysql-connector-java</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
-
-		<dependency> <!-- open shift -->
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.2.12</version>
+		<dependency> <!-- localhost -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
 		</dependency>
+
+<!--		<dependency> &lt;!&ndash; open shift &ndash;&gt;-->
+<!--			<groupId>org.postgresql</groupId>-->
+<!--			<artifactId>postgresql</artifactId>-->
+<!--			<version>42.2.12</version>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
