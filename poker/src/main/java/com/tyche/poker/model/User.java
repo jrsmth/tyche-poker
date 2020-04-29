@@ -2,8 +2,10 @@ package com.tyche.poker.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name="game_user")
 public class User {
 
     @Id

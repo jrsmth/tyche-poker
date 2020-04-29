@@ -65,7 +65,7 @@ public class MainController {
                 model.addAttribute("thisUser", thisUser);
                 model.addAttribute("otherUsers", otherUsers);
                 model.addAttribute("tableState", tableState);
-                
+
             }
 
             return "room.html";
