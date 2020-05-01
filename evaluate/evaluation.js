@@ -1,5 +1,5 @@
 
-// for each hand, assign it a ranking from 1-10 (higher the better) (e.g pair -> 9)
+// for each hand, assign it a ranking from 1-10 (lower the better) (e.g pair -> 9)
         // include the value of the cards that contribute to the ranking (e.g pair of two's -> 9, 2)
 
 // if two or more hands have an equivalent ranking, look at the goal difference
@@ -11,16 +11,34 @@ module.exports = {
 
     evaluate: function (users) {
 
-        // for each hand, assign it a ranking from 1-10 (higher the better) (e.g pair -> 9)
-            // include the value of the cards that contribute to the ranking (e.g pair of two's -> 9, 2)
+        rankingMap = {};
+        rankingList = [];
 
         for(user of users){
-            var thisRank = rank(user.cards);
-            console.log(thisRank);
-            console.log(user.uuid);
+            console.log("uuid: " + user.uuid);
+            var thisRank = rank(user.cards)
+            rankingMap[user.uuid] = handRanks[thisRank];
+            rankingList.push(handRanks[thisRank]);
         }
 
-        return "null";
+
+        rankingList.sort().reverse();
+        var winningTier = rankingList[0];
+        console.log("ranking list: " + rankingList);
+        console.log("winning hand: " + hands[handRanks.indexOf(winningTier)]);
+
+
+        // what if equal tier? goal difference...
+
+
+        var winners = [];
+        for(user of users){
+            if(rankingMap[user.uuid] == winningTier){
+                winners.push({"uuid": user.uuid});
+            }
+        }
+
+        return winners;
     }
 
   };
@@ -28,20 +46,23 @@ module.exports = {
 
   function rank(cards){
 
+    var cardStr = "";
+    var i;
+    for (i = 0; i < 7; i++) { 
+        cardStr += cards[i].rank + suitMap[cards[i].suit] + " ";
+    }
+
+    var handIndex = rankHand(cardStr);
+
+    console.log("evaluation: " + hands[handIndex]);
     
-    return rankHand("10♠ J♣ Q♥ K♦ A♠ A♦ K♠");
+    return handIndex;
 
   }
 
-  // eventHandler -> doRank -> rankHand -> 
-// takes in from cardInput default: 10♠ J♣ Q♥ K♦ A♠ [A♦ K♠]
 
-// rankHand(10♠ J♣ Q♥ K♦ A♠ A♦ K♠);
-
-// replace document shizzzz?
-
-
-
+  
+// tidy up the shit below - a lot of dead code - then understand how it works...
 
 
 
@@ -52,7 +73,14 @@ module.exports = {
 
 hands=["4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
        "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House", "-Invalid-" ];
+
 handRanks = [8,9,5,6,1,2,3,10,4,7,0];
+
+var suitMap = {"spades":"♠", "clubs":"♣", "hearts":"♥", "diamonds":"♦"};
+
+
+// delete me?
+var cards = {card1:{rank: "", suit:""}, card2:{rank: "", suit:""}, card3:{rank: "", suit:""}, card4:{rank: "", suit:""}, card5:{rank: "", suit:""}, card6:{rank: "", suit:""}, card7:{rank: "", suit:""}};
 
 function calcIndex(cs,ss) {
   var v,i,o,s; for (i=-1, v=o=0; i<5; i++, o=Math.pow(2,cs[i]*4)) {v += o*((v/o&15)+1);}
@@ -61,7 +89,7 @@ function calcIndex(cs,ss) {
   return v - (ss[0] == (ss[0]|ss[1]|ss[2]|ss[3]|ss[4])) * ((s == 0x7c00) ? -5 : 1);
 }
 function getCombinations(k,n) {
-    console.log('called getcombinations' + ' ' + k + ' ' + n);
+    // console.log('called getcombinations' + ' ' + k + ' ' + n);
     var result = [], comb = [];
         function next_comb(comb, k, n ,i) {
             if (comb.length === 0) {for (i = 0; i < k; ++i) {comb[i] = i;} return true;}
@@ -75,7 +103,7 @@ function getCombinations(k,n) {
     return result;
 }
 function getPokerScore(cs) {
-    console.log('called getpokerscore ' + cs);
+    // console.log('called getpokerscore ' + cs);
     var a = cs.slice(), d={}, i;
     for (i=0; i<5; i++) {d[a[i]] = (d[a[i]] >= 1) ? d[a[i]] + 1 : 1;}
     a.sort(function(a,b){return (d[a] < d[b]) ? +1 : (d[a] > d[b]) ? -1 : (b - a);});
@@ -88,7 +116,7 @@ function showParsedCards(cs,ss) {
     if (cs !== null && ss !== null) {
         if (cs.length == ss.length) {       
             for (i=0;i<7;i++) {
-                card = document.getElementById("card"+(i+1));
+                //card = document.getElementById("card"+(i+1));
                 if (i < 5) {                     
                     if (i < cs.length && cs.length !== 0) {
                         card.className = "card rank-" + cs[i].toLowerCase() + " " + suitMap[ss[i]];
@@ -126,7 +154,7 @@ function showParsedCards(cs,ss) {
     } else {
         //Reset the cards
         for (i=0;i<7;i++) {
-            card = document.getElementById("card"+(i+1));
+            //card = document.getElementById("card"+(i+1));
             if (i>4 && i<7) {
                 card.className = "blank";
                 card.getElementsByTagName("span")[0].innerHTML = "";
@@ -142,14 +170,14 @@ function showParsedCards(cs,ss) {
         }
     }
 
-    if (cs === null) {document.getElementById("wrapper").style.width = "425px";}
+    if (cs === null) {//document.getElementById("wrapper").style.width = "425px";}
     if (cs !== null && ss !== null && cs.length <= 7 && cs.length == ss.length) 
-        {document.getElementById("wrapper").style.width = Math.max(85*cs.length, 425) + "px";}
-}  
+        {} //{document.getElementById("wrapper").style.width = Math.max(85*cs.length, 425) + "px";}
+} } 
     
 function rankHand(str) {
     var index = 10, winCardIndexes, i ,e;
-    showParsedCards(str.match(/(1[0-4]|[2-9]|[J|Q|K|A])/g), str.match(/♠|♣|♥|♦/g));
+    // showParsedCards(str.match(/(1[0-4]|[2-9]|[J|Q|K|A])/g), str.match(/♠|♣|♥|♦/g));
     
     if (str.match(/((?:\s*)(10|[2-9]|[J|Q|K|A])[♠|♣|♥|♦](?:\s*)){5,7}/g) !== null) {
         var cardStr = str.replace(/A/g,"14").replace(/K/g,"13").replace(/Q/g,"12")
@@ -189,32 +217,33 @@ function rankHand(str) {
                          }
                     } 
                     index = winIndex; 
+                    return index;
                  }                     
                 }  
   
                 //Show the best cards if cs.length is less than 7 cards.
-                var card;
-                if (cards.length <= 7) {
-                    for (i=0; i<7; i++) {
-                        card = document.getElementById("card"+(i+1));
-                        if (wci.indexOf(i) == -1) {
-                            //Not in the solution
-                            if (card.parentNode.tagName == "STRONG") {
-                                card.parentNode.parentNode.innerHTML = card.outerHTML;
-                            }
-                        } else {
-                            //Is in the solution
-                            if (card.parentNode.tagName == "LI") {
-                                card.outerHTML = "<strong>" + card.outerHTML  + "</strong>";
-                            }                                  
-                        }
-                    }
-                }
+                // var card;
+                // if (cards.length <= 7) {
+                //     for (i=0; i<7; i++) {
+                //         card = document.getElementById("card"+(i+1));
+                //         if (wci.indexOf(i) == -1) {
+                //             //Not in the solution
+                //             if (card.parentNode.tagName == "STRONG") {
+                //                 card.parentNode.parentNode.innerHTML = card.outerHTML;
+                //             }
+                //         } else {
+                //             //Is in the solution
+                //             if (card.parentNode.tagName == "LI") {
+                //                 card.outerHTML = "<strong>" + card.outerHTML  + "</strong>";
+                //             }                                  
+                //         }
+                //     }
+                // }
             }
         }
     }
 
-    document.getElementById("output").innerHTML = "<Big><B>Hand: </B>" + hands[index] + "</Big>";
+    // document.getElementById("output").innerHTML = "<Big><B>Hand: </B>" + hands[index] + "</Big>";
 }  
 
 function inputCardSymbolsOnly(e) { 
@@ -278,8 +307,7 @@ function doRank(e) {
 }
     
 
-addEventHandler(document.getElementById("cardInput"),'keypress',inputCardSymbolsOnly);
-addEventHandler(document.getElementById("cardInput"),'keyup',doRank);
-addEventHandler(document.getElementById("cardInput"),'input', doRank);
-document.getElementById('cardInput').focus();
-
+// addEventHandler(document.getElementById("cardInput"),'keypress',inputCardSymbolsOnly);
+// addEventHandler(document.getElementById("cardInput"),'keyup',doRank);
+// addEventHandler(document.getElementById("cardInput"),'input', doRank);
+// document.getElementById('cardInput').focus();
