@@ -1,14 +1,32 @@
-const http = require('http');
+'use strict'
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const express = require('express');
+const bodyParser = require('body-parser');
+var evaluation = require('./evaluation');
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
-});
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+
+
+// Route that receives a POST request to /winners
+app.post('/winners', function (req, res) {
+  const body = req.body;
+  const winners = evaluation.evaluate(body.userHands);
+  res.set('Content-Type', 'application/json');
+  res.json(winners);
+})
+
+
+// Tell our app to listen on port 3000
+app.listen(3000, function (err) {
+  if (err) {
+    throw err;
+  }
+  console.log('Server started on port 3000');
+})
+
+
+// run using: node express-post.js
