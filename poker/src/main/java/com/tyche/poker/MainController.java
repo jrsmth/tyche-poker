@@ -173,6 +173,7 @@ public class MainController {
 
         for(User user : currentUsers){
             user.setCard0((new Card()).toString());
+            user.setCard1((new Card()).toString());
             userRepository.save(user);
         }
 
@@ -389,7 +390,7 @@ public class MainController {
         }
 
         // dish out pot to the user with the highest card (split on draw)
-        List<User> winners = Card.compareCards(usersList);
+        List<User> winners = Card.compareCards(usersList, thisTable);
         for(User winner : winners){
             int winnings = thisTable.getPot() / winners.size();
             winner.setChips(winner.getChips() + winnings);
