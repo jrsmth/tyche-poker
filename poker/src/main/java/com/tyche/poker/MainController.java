@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.tyche.poker.Card.cardsInPlay;
 import static com.tyche.poker.Card.compareCards;
 
 @Controller // must be Controller (not RestController) for Thymeleaf...
@@ -176,6 +177,8 @@ public class MainController {
             user.setCard0((new Card()).toString());
             user.setCard1((new Card()).toString());
             userRepository.save(user);
+            cardsInPlay.add(user.getCard0());
+            cardsInPlay.add(user.getCard1());
         }
 
         updateState();
@@ -303,6 +306,9 @@ public class MainController {
                 thisTable.setFlop0(new Card().toString());
                 thisTable.setFlop1(new Card().toString());
                 thisTable.setFlop2(new Card().toString());
+                cardsInPlay.add(thisTable.getFlop0());
+                cardsInPlay.add(thisTable.getFlop1());
+                cardsInPlay.add(thisTable.getFlop2());
                 thisTable.setCurrentBet(0);
                 for(User user:allUsersList){
                     user.setMyBet(0);
@@ -314,6 +320,7 @@ public class MainController {
                 pokerTableRepository.save(thisTable);
             } else if(thisTable.getTurn() == null){
                 thisTable.setTurn(new Card().toString());
+                cardsInPlay.add(thisTable.getTurn());
                 thisTable.setCurrentBet(0);
                 for(User user:allUsersList){
                     user.setMyBet(0);
@@ -325,6 +332,7 @@ public class MainController {
                 pokerTableRepository.save(thisTable);
             } else if (thisTable.getRiver() == null){
                 thisTable.setRiver(new Card().toString());
+                cardsInPlay.add(thisTable.getRiver());
                 thisTable.setCurrentBet(0);
                 for(User user:allUsersList){
                     user.setMyBet(0);
@@ -399,6 +407,8 @@ public class MainController {
 
         // wipe table db
         pokerTableRepository.delete(thisTable);
+        System.out.println("cards in play: " + cardsInPlay.toString()); // test
+        cardsInPlay.clear();
     }
 
 
