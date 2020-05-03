@@ -1,13 +1,11 @@
 package com.tyche.poker;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -78,43 +76,49 @@ public class Card {
         // what are the hands? 7 cards (table + user)
         ArrayList<String[]> userHands = new ArrayList<>();
         StringBuilder body = new StringBuilder("{ \"userHands\": [");
+        int i = 0;
         for (User user : userList){
-            String thisHand = user.getCard0() + user.getCard1() + thisTable.getFlop0() + thisTable.getFlop1() + thisTable.getFlop2() + thisTable.getTurn()+ thisTable.getRiver();
+            String thisHand = user.getCard0() + " " + user.getCard1() + " " + thisTable.getFlop0() + " " + thisTable.getFlop1() + " " + thisTable.getFlop2() + " " + thisTable.getTurn() + " " + thisTable.getRiver();
             String thisUserHand = "{ \"uuid\": \"" + user.getUuid() + "\", \"cards\": \"" + thisHand + "\" }";
-            body.append(thisUserHand + ", ");
+            body.append(thisUserHand);
+            if(i < userList.size() - 1)  body.append(", ");
+            i++;
         }
 
-        body.setLength(body.length() - 1);
         body.append("] }");
+        System.out.println(body);
 
-        System.out.println(body); //test
+        List<User> topDogs = new ArrayList<>();
 
         // call tyche-evaluate to get the winning uuid(s)
-        String url = "http://localhost:3000/winners";
+        Unirest.setTimeouts(0, 0);
         try {
-            URL serverUrl = new URL(url);
-            HttpURLConnection urlConnection = (HttpURLConnection) serverUrl.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setDoOutput(true);
-
-            // build the body:
-
-        } catch (Exception e) {
+            HttpResponse<String> response = Unirest.post("http://localhost:3000/winners")
+                    .header("Content-Type", "application/json")
+                    .body(body.toString())
+                    .asString();
+            String responseStr = response.getBody().substring(2,response.getBody().length()-2);
+            String[] dogs = responseStr.split(",");
+            for (String dog : dogs){
+                for (User user : userList){
+                    if (user.getUuid().equals(dog)) topDogs.add(user);
+                }
+            }
+        } catch (UnirestException e) {
             e.printStackTrace();
         }
-        
 
+        for(User dog : topDogs){
+            System.out.println("winner: " + dog.getUuid());
+        }
 
-
-        return null;
+        return topDogs;
     }
 
 
     @Override
     public String toString() {
-        return rank + " " + suit;
+        return rank + suit;
     }
 
 }

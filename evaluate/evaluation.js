@@ -35,9 +35,9 @@ module.exports = {
                     console.log(score);
                     if(score > topScore){
                         winners = [];
-                        winners.push({"uuid": user.uuid});
+                        winners.push(user.uuid);
                     } else if (score == topScore){
-                        winners.push({"uuid": user.uuid});
+                        winners.push(user.uuid);
                     }
             }
         }

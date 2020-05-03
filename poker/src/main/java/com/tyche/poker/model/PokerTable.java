@@ -17,6 +17,17 @@ public class PokerTable {
     private int currentBet;
 
 
+    public PokerTable() {
+    }
+
+    public PokerTable(String flop0, String flop1, String flop2, String turn, String river) {
+        this.flop0 = flop0;
+        this.flop1 = flop1;
+        this.flop2 = flop2;
+        this.turn = turn;
+        this.river = river;
+    }
+
     public String getUuid() {
         return uuid;
     }

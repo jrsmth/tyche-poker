@@ -14,6 +14,7 @@ app.use(bodyParser.raw());
 // Route that receives a POST request to /winners
 app.post('/winners', function (req, res) {
   const body = req.body;
+  console.log("req body: " + req.body.userHands);
   const winners = evaluation.evaluate(body.userHands);
   res.set('Content-Type', 'application/json');
   res.json(winners);

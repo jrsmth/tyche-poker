@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -401,6 +402,16 @@ public class MainController {
     }
 
 
+    @GetMapping(path="/test/evaluate")
+    public @ResponseBody List<User> comparatorTest(){
+
+        List<User> usersList = new ArrayList<>();
+        usersList.add(new User("001", "4♥", "2♦"));
+        usersList.add(new User("002", "2♥", "J♣"));
+        List<User> winners = Card.compareCards(usersList, new PokerTable("2♠", "3♠",  "Q♥",  "Q♦", "Q♠"));
+
+        return winners;
+    }
 
 
 

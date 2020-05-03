@@ -18,6 +18,16 @@ public class User {
     private boolean fold;
     private int myBet;
 
+
+    public User() {
+    }
+
+    public User(String uuid, String card0, String card1) {
+        this.uuid = uuid;
+        this.card0 = card0;
+        this.card1 = card1;
+    }
+
     public String getUuid() {
         return uuid;
     }
