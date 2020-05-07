@@ -55,3 +55,20 @@ html, body{
     position: absolute;
 }
 
+
+#state-this-user-hand{
+    left: calc(100% * 0.618); 
+    height: calc(100% * 0.618);
+    margin: auto;
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+}
+
+
+.state-this-user-card{
+    height: 100%;
+    padding: 0 10px;
+    position: relative;
+}
+

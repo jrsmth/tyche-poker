@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="952fd557-03fd-485f-becb-158811adeb13" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/manifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poker/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/poker/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poker/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,6 +27,7 @@
   </component>
   <component name="ProjectId" id="1bD7Acmo6KM9M0rnvGtIhDEcqW0" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -65,7 +63,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
