@@ -13,19 +13,30 @@
 
     <body>
 
+
+        <!-- Notification -->
+        <div id="notification-saved"><div id="img"><i class="fa fa-check-circle online"></i></div><div id="desc"> saved </div></div>
+
+
         <!-- Display Other User's State -->
         <div id="state-other-users">
             <div id="state-other-users-table">
-                <div class="other-users"> <i class="fa fa-user"></i> HARREH </div>
-                <div class="other-users"> <i class="fa fa-user"></i> OWEN </div>
-                <div class="other-users"> <i class="fa fa-user"></i> ANKZ </div>
+                <div class="other-users"> <i class="fa fa-user"></i> HARREH <br> <span> 300 </span></div>
+                <div class="other-users"> <i class="fa fa-user"></i> OWEN <br> <span> 1000 </span></div>
+                <div class="other-users"> <i class="fa fa-user"></i> ANKZ <br> <span> 550 </span></div>
             </div>
         </div>
 
 
         <!-- Display Table State -->
         <div id="state-table">
-            
+            <div id="state-table-hand">
+                <img class="state-table-card" src="./res/PNG-cards-1.3/8_of_clubs.png">
+                <img class="state-table-card" src="./res/PNG-cards-1.3/10_of_diamonds.png">
+                <img class="state-table-card" src="./res/PNG-cards-1.3/4_of_diamonds.png">
+                <img class="state-table-card" src="./res/PNG-cards-1.3/2_of_spades.png">
+                <img class="state-table-card" src="./res/PNG-cards-1.3/8_of_hearts.png">
+        </div>
         </div>
 
 
@@ -36,6 +47,16 @@
                     <img class="state-this-user-card" src="./res/PNG-cards-1.3/6_of_spades.png">
             </div>
         </div>
+
+
+
+        <!-- move to scripter -->
+        <script>
+                // notification - saved
+                var notification = document.getElementById("notification-saved")
+                notification.className = "show";
+                setTimeout(function(){ notification.className = notification.className.replace("show", ""); }, 5000);
+        </script>
 
 
     </body>
