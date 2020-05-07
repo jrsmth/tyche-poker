@@ -17,7 +17,7 @@ html, body{
     background-color: rgb(28,28,30);
     position: absolute;
     z-index: 100;
-    color: #fff;
+    color: rgb(242,242,247);
 }
 
 
@@ -26,6 +26,11 @@ html, body{
     margin: auto;
     width: 80%;
     height: 100%;
+}
+
+
+.turn-true{
+    color: #1de760;
 }
 
 
@@ -38,6 +43,12 @@ html, body{
 }
 
 
+.other-users-chips{
+    font-size: 10px;
+    opacity: 0.618;
+}
+
+
 #state-table{
     top: calc(100% * 0.382 - 100% * 0.236);
     width: 100%;
@@ -47,7 +58,33 @@ html, body{
 }
 
 
-#state-table-hand{ /* duplicate */
+#state-table-info{
+    color: rgb(242,242,247);
+    vertical-align: middle;
+    width: 25%;
+    height: 100%; 
+    left: 25%;
+    position: absolute;
+    display: table;
+}
+
+
+#state-table-info i{
+    opacity: 0.618;
+}
+
+
+#state-table-info span{
+    font-size: 18px;
+    padding: 40px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+}
+
+
+#state-table-hand{ 
     left: 50%; 
     height: calc(100% * 0.618);
     margin: auto;
@@ -57,7 +94,7 @@ html, body{
 }
 
 
-.state-table-card{ /* duplicate */
+.state-table-card{
     height: 100%;
     padding: 0 10px;
     position: relative;
@@ -70,6 +107,22 @@ html, body{
     height: calc(100% * 0.618); /* golden ratio ** 1 */
     background-color: rgb(242,242,247);
     position: absolute;
+}
+
+
+#state-this-user-info {
+    color: rgb(28,28,30);
+    width: 100%;
+    text-align: center;
+    top: calc(100% * 0.236 * 0.5);
+    position: absolute;
+    font-size: 24px;
+}
+
+
+#state-this-user-info-chips{
+    font-size: 16px;
+    opacity: 0.618;
 }
 
 
@@ -97,7 +150,7 @@ html, body{
     /*margin-left: -125px;*/
     margin: auto;
     background-color: #333;
-    color: #fff;
+    color: rgb(242,242,247);
     text-align: center;
     border-radius: 2px;
     position: fixed;
@@ -119,7 +172,7 @@ html, body{
     margin: 0 auto; 
     box-sizing: border-box;   
     background-color: #1a1a1a;
-    color: #fff;
+    color: rgb(242,242,247);
 }
 
 
@@ -130,7 +183,7 @@ html, body{
 
 
 #notification-saved #desc{ 
-    color: #fff;
+    color:rgb(242,242,247);
     line-height: 30px;
     overflow: hidden;
     white-space: nowrap;
