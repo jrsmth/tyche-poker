@@ -6,32 +6,52 @@ html, body{
     max-height: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
 }
 
 
 #state-other-users{
     width: 100%;
-    height: calc(100% * 0.236); /* golden ratio ** 3 */
-    background-color: rgb(1, 73, 1);
+    height: calc(100% * 0.382 - 100% * 0.236); /* golden ratio ** 3 */
+    background-color: rgb(28,28,30);
     position: absolute;
     z-index: 100;
+    color: #fff;
+}
+
+
+#state-other-users-table{
+    display: table;
+    margin: auto;
+    width: 80%;
+    height: 100%;
+}
+
+
+.other-users{
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 100px; /* for some reason this is setting the width to be 100%/num users - wtf... */
+    /* ^ Keep it for now, it works! so does 300px so I don't know what the hell is going on */
 }
 
 
 #state-table{
-    top: calc(100% * 0.236);
+    top: calc(100% * 0.382 - 100% * 0.236);
     width: 100%;
-    height: calc(100% * 0.618 - 100% * 0.236); /* golden ratio ** 1 */
-    background-color: darkgreen;
+    height: calc(100% * 0.236); /* golden ratio ** 2 */
+    background-color: rgb(44,44,46);
     position: absolute;
 }
 
 
 #state-this-user{
-    top: calc(100% * 0.618);
+    top: calc(100% * 0.382);
     width: 100%;
-    height: calc(100% * 0.382); /* golden ratio ** 2 */
-    background-color: blue;
+    height: calc(100% * 0.618); /* golden ratio ** 1 */
+    background-color: rgb(242,242,247);
     position: absolute;
 }
 
