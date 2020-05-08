@@ -8,6 +8,13 @@ html, body{
     overflow-y: hidden;
     font-family: 'Roboto', sans-serif;
     letter-spacing: 1px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 
@@ -96,8 +103,16 @@ html, body{
 
 .state-table-card{
     height: 100%;
-    padding: 0 10px;
+    margin: 0 10px;
     position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+}
+
+
+.down-true{
+    opacity: 0.618;
 }
 
 
@@ -126,6 +141,45 @@ html, body{
 }
 
 
+#state-this-user-action{ 
+    position: absolute;
+    top: calc(100% * 0.382); 
+    left: calc(100% * 0.236); 
+    display: grid; 
+    color: rgb(28,28,30);
+    font-size: 16px;
+}
+
+
+#state-this-user-action span{ 
+    padding: 15px 0;
+    transition: 0.5s;
+}
+
+
+#state-this-user-action span:hover{
+    cursor: pointer;
+    transform: translateX(10px);
+}
+
+
+#state-this-user-action i{ 
+    padding: 0 10px;
+    opacity: 0.618;
+}
+
+
+#state-this-user-action input {
+    background-color: rgb(242,242,247);
+    letter-spacing: 1px;
+    margin-left: 20px;
+    border: none;
+}
+  
+  
+#state-this-user-action input:focus { outline: none; }
+
+
 #state-this-user-hand{
     left: calc(100% * 0.618); 
     height: calc(100% * 0.618);
@@ -138,16 +192,18 @@ html, body{
 
 .state-this-user-card{
     height: 100%;
-    padding: 0 10px;
+    margin: 0 10px;
     position: relative;
+    -webkit-box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
+    box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
 }
 
 
-#notification-saved  {
+#notification  {
     visibility: hidden;
     max-width: 30px;
     height: 30px;
-    /*margin-left: -125px;*/
     margin: auto;
     background-color: #333;
     color: rgb(242,242,247);
@@ -165,7 +221,7 @@ html, body{
 }
 
 
-#notification-saved  #img{
+#notification  #img{
 	width: 30px;
 	height: 30px;
     float: left;  
@@ -176,13 +232,13 @@ html, body{
 }
 
 
-#notification-saved #img i{
+#notification #img i{
     line-height: 30px;
     font-size: 16px;
 }
 
 
-#notification-saved #desc{ 
+#notification-desc{ 
     color:rgb(242,242,247);
     line-height: 30px;
     overflow: hidden;
@@ -190,7 +246,7 @@ html, body{
     padding-right: 20px;
 }
  
-#notification-saved.show {
+#notification.show {
     visibility: visible;
     -webkit-animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 2s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
@@ -255,5 +311,63 @@ html, body{
 @keyframes fadeout {
     from {bottom: 5px; opacity: 1;}
     to {bottom: -5px; opacity: 0;}
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.618; }
+}
+
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.618; }
+}
+
+
+.fadeIn{
+    -webkit-animation: fadeIn 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: fadeIn 2s;
+}
+
+
+@keyframes fadeInUp {
+    from {transform: translate3d(0,40px,0);opacity:0;}
+    to {transform: translate3d(0,0,0);opacity: 1;}
+}
+
+
+@-webkit-keyframes fadeInUp {
+    from {transform: translate3d(0,40px,0);opacity:0;}
+    to {transform: translate3d(0,0,0);opacity: 1;}
+}
+
+
+.fadeInUp {
+    -webkit-animation: fadeInUp 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: fadeInUp 2s;
+}
+
+
+@keyframes flipCard {
+    0% {opacity:0;}
+    50% {opacity:0.5;transform: rotateY(-90deg);}
+    100% {opacity: 1;transform: rotateY(0deg);}
+}
+
+
+@-webkit-keyframes flipCard {
+    0% {opacity:0;}
+    50% {opacity:0.5;-webkit-transform: rotateY(-90deg);}
+    to {opacity: 1;-webkit-transform: rotateY(0deg);}
+}
+
+
+.flip-true {
+    -webkit-animation: flipCard 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: flipCard 2s linear;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.67,.15,.27,.79);
 }
 
