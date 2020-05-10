@@ -20,6 +20,8 @@ public class User {
 
 
     public User() {
+        this.card0 = "reverse";
+        this.card1 = "reverse";
     }
 
     public User(String uuid, String card0, String card1) {

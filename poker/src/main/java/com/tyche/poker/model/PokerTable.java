@@ -18,7 +18,13 @@ public class PokerTable {
 
 
     public PokerTable() {
+        this.flop0 = "reverse";
+        this.flop1 = "reverse";
+        this.flop2 = "reverse";
+        this.turn = "reverse";
+        this.river = "reverse";
     }
+
 
     public PokerTable(String flop0, String flop1, String flop2, String turn, String river) {
         this.flop0 = flop0;
@@ -27,6 +33,7 @@ public class PokerTable {
         this.turn = turn;
         this.river = river;
     }
+
 
     public String getUuid() {
         return uuid;

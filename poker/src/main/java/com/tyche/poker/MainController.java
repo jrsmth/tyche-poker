@@ -2,6 +2,7 @@ package com.tyche.poker;
 
 import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
+import com.tyche.poker.requests.TurnRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -60,9 +61,6 @@ public class MainController {
 
             } catch(Exception e){
                 PokerTable tableState = new PokerTable();
-                tableState.setPot(0);
-                tableState.setUuid("null");
-                tableState.setFlop0("null");
 
                 model.addAttribute("thisUser", thisUser);
                 model.addAttribute("otherUsers", otherUsers);
@@ -84,8 +82,8 @@ public class MainController {
         newUser.setUuid(uuid);
         newUser.setName(name.substring(6));
         newUser.setChips(1000);
-        newUser.setCard0("null");
-        newUser.setCard1("null");
+        newUser.setCard0("reverse");
+        newUser.setCard1("reverse");
         userRepository.save(newUser);
 
         // when a new user is added, we want to update the view of users already in the game
@@ -165,7 +163,6 @@ public class MainController {
         PokerTable table = new PokerTable();
         table.setPot(0);
         table.setUuid(UUID.randomUUID().toString());
-        //table.setFlop0(new Card().toString()); -> no longer wanted...
         pokerTableRepository.save(table);
 
         Iterable<User> currentUsersIterable = getAllUsers();
@@ -192,10 +189,13 @@ public class MainController {
     public RedirectView makeTurn(@RequestBody String uuid_action_betValue) {
 
         // extract uuid, action & betValue
-        // uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
+//         uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
         String uuid = uuid_action_betValue.substring(5,41);
         String action = uuid_action_betValue.substring(49,53);
         int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
+
+
+//        int betValue = Integer.parseInt(turnPayload.getBetValue());
 
         // update the state of this user and that of the table
         User thisUser = getUser(uuid);
@@ -226,10 +226,13 @@ public class MainController {
                 }
                 break;
             case "chec":
+                System.out.println("hit0");
                     try {
                         if(thisTable.getCurrentBet() == 0){
                             thisUser.setMyBet(0);
+                            System.out.println("hit1");
                         } else {
+                            System.out.println("hit2");
                             throw new Exception();
                         }
                     } catch (Exception e) {
@@ -239,13 +242,16 @@ public class MainController {
                     }
                 break;
             case "rais":
+                System.out.println("hit0");
                 try { // also need to add a rule: a raise must take your current bet for this betting turn to be > the current table bet!
                     if(thisUser.getChips() - betValue >= 0 && betValue > thisTable.getCurrentBet()){
+                        System.out.println("hit1");
                         thisUser.setMyBet(betValue);
                         thisUser.setChips(thisUser.getChips() - thisUser.getMyBet());
                         thisTable.setCurrentBet(thisUser.getMyBet());
                         thisTable.setPot(thisTable.getPot() + thisUser.getMyBet());
                     } else {
+                        System.out.println("hit2");
                         throw new Exception();
                     }
                 } catch (Exception e) {
@@ -302,7 +308,7 @@ public class MainController {
             // if all players have bet and river == null, set river and all bet again
             // if all players have bet and river != null, end the turn!
 
-            if(thisTable.getFlop0() == null ){
+            if(thisTable.getFlop0().equals("reverse")){
                 thisTable.setFlop0(new Card().toString());
                 thisTable.setFlop1(new Card().toString());
                 thisTable.setFlop2(new Card().toString());
@@ -318,7 +324,7 @@ public class MainController {
                 nextUser.setMyTurn(true);
                 userRepository.save(nextUser);
                 pokerTableRepository.save(thisTable);
-            } else if(thisTable.getTurn() == null){
+            } else if(thisTable.getTurn().equals("reverse")){
                 thisTable.setTurn(new Card().toString());
                 cardsInPlay.add(thisTable.getTurn());
                 thisTable.setCurrentBet(0);
@@ -330,7 +336,7 @@ public class MainController {
                 nextUser.setMyTurn(true);
                 userRepository.save(nextUser);
                 pokerTableRepository.save(thisTable);
-            } else if (thisTable.getRiver() == null){
+            } else if (thisTable.getRiver().equals("reverse")){
                 thisTable.setRiver(new Card().toString());
                 cardsInPlay.add(thisTable.getRiver());
                 thisTable.setCurrentBet(0);
@@ -342,7 +348,7 @@ public class MainController {
                 nextUser.setMyTurn(true);
                 userRepository.save(nextUser);
                 pokerTableRepository.save(thisTable);
-            } else if (thisTable.getRiver() != null){
+            } else if (thisTable.getRiver().equals("reverse")){
                 endTurn(thisTable);
                 for(User user:allUsersList){
                     user.setMyBet(0);
@@ -371,6 +377,7 @@ public class MainController {
         }
 
 
+        System.out.println("redirect to room?");
         // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
         RedirectView rv = new RedirectView("/room");
         rv.addStaticAttribute("uuid", uuid);
