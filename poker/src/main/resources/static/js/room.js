@@ -10,6 +10,10 @@ setTimeout(function () {
 }, 10000);
 
 
+// game loop
+// once a second, poll the game state (user and table models
+
+
 // populate this user's uuid
 var uuid = document.getElementById("user-uuid").innerHTML;
 console.log(uuid);
