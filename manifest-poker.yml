@@ -3,4 +3,4 @@ applications:
 - name: tyche
   path: ./poker/target/poker-0.0.1-SNAPSHOT.jar
   env:
-    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{ enabled: false }' # Is this even nec?
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{ enabled: false }' 

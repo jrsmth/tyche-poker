@@ -1,126 +1,127 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <style>
-        .myTurn{
-            display: none
-        }
-
-
-    </style>
-
     <head>
-        <title> Tyche </title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+        <link th:href="@{/css/room.css}" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/096f2be9ca.js" crossorigin="anonymous"></script>
+
+        <!-- a little janky, to bypass templating issue -->
+        <div id="others" th:each="user : ${otherUsers}" style="display:none">
+            <div class="others-name" th:text="${user.getName()}"></div>
+            <div class="others-chips" th:text="${user.getChips()}"></div>
+            <div class="others-turn" th:text="${user.isMyTurn()}"></div>
+        </div>
+        <p id="table-pot" th:text="${tableState.getPot()}" style="display:none"></p>
+        <p id="table-bet" th:text="${tableState.getCurrentBet()}" style="display:none"></p>
+        <div id="table-hand" th:each="table : ${tableState}" style="display:none">
+            <p id="table-cards-flop0" class="table-cards" th:text="${table.getFlop0()}"></p>
+            <p id="table-cards-flop1" class="table-cards" th:text="${table.getFlop1()}"></p>
+            <p id="table-cards-flop2" class="table-cards" th:text="${table.getFlop2()}"></p>
+            <p id="table-cards-turn" class="table-cards" th:text="${table.getTurn()}"></p>
+            <p id="table-cards-river" class="table-cards" th:text="${table.getRiver()}"></p>
+        </div>
+        <p id="user-card0" th:text="${thisUser.getCard0()}" style="display:none"> </p>
+        <p id="user-card1" th:text="${thisUser.getCard1()}" style="display:none"> </p>
+        <p id="user-turn" th:text="${thisUser.isMyTurn()}" style="display:none"> </p>
+        <p id="user-uuid" th:text="${thisUser.getUuid()}" style="display:none"> </p>
     </head>
+
     <body>
 
-    <!-- Consume name and chip number, if null, redirect to /(register) -->
 
-    <p id="thisUser" th:text="${thisUser.getName()}"> </p>
-
-    <p id="thisUuid" th:text="${thisUser.getUuid()}" style="display: none"> </p>
-
-    <p th:text="${thisUser.getChips()}"> </p>
-
-    <p th:text="${thisUser.getCard0()}"> </p>
-
-    <p th:text="${thisUser.getCard1()}"> </p>
-
-    <p id="isMyTurn" th:text="${thisUser.isMyTurn()}"> </p>
-
-    <p> hi there :) </p>
-
-    <br>
-    <br>
-
-    <h1 class="myTurn"> My Turn </h1>
-
-    <form class="myTurn" action="/turn" method="post">
-        <input type="hidden" class="check uuid" name="uuid" value="">
-        <input type="hidden" class="check" name="action" value="chec"> <!-- must be four char's -->
-        <input type="hidden" class="check" name="betValue" value="0">
-        <input type="submit" value="check">
-    </form>
-
-    <form class="myTurn" action="/turn" method="post">
-        <input type="hidden" class="call uuid" name="uuid" value="">
-        <input type="hidden" class="call" name="action" value="call">
-        <input type="hidden" class="call" name="betValue" value="0">
-        <input type="submit" value="call">
-    </form>
-
-    <form class="myTurn" action="/turn" method="post">
-        <input type="hidden" class="raise uuid" name="uuid" value="">
-        <input type="hidden" class="raise" name="action" value="rais"> <!-- must be four char's -->
-        <input type="text" class="raise" name="betValue" value="0">
-        <input type="submit" value="raise">
-    </form>
-
-    <form class="myTurn" action="/turn" method="post">
-        <input type="hidden" class="fold uuid" name="uuid" value="">
-        <input type="hidden" class="fold" name="action" value="fold">
-        <input type="hidden" class="fold" name="betValue" value="0">
-        <input type="submit" value="fold">
-    </form>
-
-    <form class="myTurn" action="/turn" method="post">
-        <input type="hidden" class="allin uuid" name="uuid" value="">
-        <input type="hidden" class="allin" name="action" value="alli"> <!-- must be four char's -->
-        <input type="hidden" class="allin" name="betValue" value="0">
-        <input type="submit" value="allin">
-    </form>
+    <!-- Notification -->
+    <div id="notification"><div id="img"><i id="notification-i"></i></div><div id="notification-desc"> </div></div>
 
 
-    <br>
-    <br>
-
-    <p> Table state: </p>
-
-    <div th:each="table : ${tableState}">
-        <div th:text="${table.getPot()}"></div>
-        <div th:text="${table.getFlop0()}"></div>
-        <div th:text="${table.getFlop1()}"></div>
-        <div th:text="${table.getFlop2()}"></div>
-        <div th:text="${table.getTurn()}"></div>
-        <div th:text="${table.getRiver()}"></div>
-        <div th:text="${table.getUuid()}"></div>
-        <div th:text="${table.getCurrentBet()}"></div>
+    <!-- Display Other User's State -->
+    <div id="state-other-users">
+        <div id="state-other-users-table">
+        </div>
     </div>
 
-    <br>
-    <br>
 
-    <p> Other players: </p>
-
-    <div th:each="user : ${otherUsers}">
-        <div th:text="${user.getName()}"></div>
-        <div th:text="${user.getChips()}"></div>
+    <!-- Display Table State -->
+    <div id="state-table">
+        <div id="state-table-info">
+            <span id="state-table-info-pot" class="fadeInUp"> <i class="fas fa-piggy-bank"></i>  </span>
+            <span id="state-table-info-bet" class="fadeInUp"> <i class="fas fa-dollar-sign"></i>  </span>
+        </div>
+        <div id="state-table-hand">
+<!--            <img class="state-table-card" src="./res/PNG-cards-1.3/8♣.png">-->
+<!--            <img class="state-table-card" src="./res/PNG-cards-1.3/10♦.png">-->
+<!--            <img class="state-table-card" src="./res/PNG-cards-1.3/4♦.png">-->
+<!--            <img class="state-table-card flip-true" src="./res/PNG-cards-1.3/reverse.png">-->
+<!--            <img class="state-table-card down-true" src="./res/PNG-cards-1.3/reverse.png">-->
+        </div>
     </div>
 
-    <script>
-        setTimeout(function () {
-            window.location.reload(1);
-        }, 10000);
 
-        var myTurn = document.getElementsByClassName("myTurn");
+    <!-- Display This User's State -->
+    <div id="state-this-user">
+        <div id="state-this-user-info"> <i class="fa fa-user" id="this-user"></i>  <span th:text="${thisUser.getName()}"></span>  <br> <span id = "state-this-user-info-chips" class="fadeIn" th:text="${thisUser.getChips()}"> </span> </div>
+        <div id="state-this-user-action">
 
-        if(document.getElementById("isMyTurn").innerHTML == "true"){
-            for (let myTurnItem of myTurn) {
-                myTurnItem.style.display = "table";
-            }
-        }
+            <span id="state-this-user-action-check">
+                    <form class="" action="/turn" method="post">
+                        <input type="hidden" class="check uuid" name="uuid" value="">
+                        <input type="hidden" class="check" name="action" value="chec"> <!-- must be four char's -->
+                        <i class="fas fa-check"></i>
+                        <input type="submit" value="check" onclick="makeTurn('chec')">
+                        <input type="hidden" class="check" name="betValue" value="0">
+                    </form>
+            </span>
+            <span id="state-this-user-action-call">
+                    <form class="" action="/turn" method="post">
+                        <input type="hidden" class="call uuid" name="uuid" value="">
+                        <input type="hidden" class="call" name="action" value="call">
+                        <i class="fas fa-arrow-right"></i>
+                        <input type="submit" value="call" onclick="makeTurn('call')">
+                        <input type="hidden" class="call" name="betValue" value="0">
+                    </form>
+            </span>
+            <span id="state-this-user-action-raise">
+                    <form class="" action="/turn" method="post">
+                        <input type="hidden" class="raise uuid" name="uuid" value="">
+                        <input type="hidden" class="raise" name="action" value="rais"> <!-- must be four char's -->
+                        <i class="fas fa-arrow-up"></i>
+                        <input type="submit" value="raise" onclick="makeTurn('rais')">
+                        <input type="text" class="raise" name="betValue" value="0">
+                    </form>
+            </span>
+            <span id="state-this-user-action-fold">
+                    <form class="" action="/turn" method="post">
+                        <input type="hidden" class="fold uuid" name="uuid" value="">
+                        <input type="hidden" class="fold" name="action" value="fold">
+                        <i class="fas fa-arrow-down"></i>
+                        <input type="submit" value="fold" onclick="makeTurn('fold')">
+                        <input type="hidden" class="fold" name="betValue" value="0">
+                    </form>
+            </span>
+            <span id="state-this-user-action-allin">
+                    <form class="" action="/turn" method="post">
+                        <input type="hidden" class="allin uuid" name="uuid" value="">
+                        <input type="hidden" class="allin" name="action" value="alli"> <!-- must be four char's -->
+                        <i class="fas fa-rocket"></i>
+                        <input type="submit" value="allin" onclick="makeTurn('alli')">
+                        <input type="hidden" class="allin" name="betValue" value="0">
+                    </form>
+            </span>
 
-        var uuid = document.getElementById("thisUuid").innerHTML;
-        console.log(uuid);
-        var uuidList = document.getElementsByClassName("uuid");
-        for (let uuidItem of uuidList) {
-            uuidItem.value = uuid;
-        }
+<!--            <span id="state-this-user-action-check" onclick="makeTurn('chec')"> <i class="fas fa-check"></i> check </span>-->
+<!--            <span id="state-this-user-action-call" onclick="makeTurn('call')"> <i class="fas fa-arrow-right"></i> call </span>-->
+<!--            <span id="state-this-user-action-raise"> <i class="fas fa-arrow-up"></i> <span onclick="makeTurn('rais')"> raise </span> <input id ="raise-value" type="text" value="0"> </span>-->
+<!--            <span id="state-this-user-action-fold" onclick="makeTurn('fold')"> <i class="fas fa-arrow-down"></i> fold </span>-->
+<!--            <span id="state-this-user-action-allin" onclick="makeTurn('alli')"> <i class="fas fa-rocket"></i> all in </span>-->
+        </div>
+        <div id="state-this-user-hand">
+        </div>
+    </div>
 
 
-
-
-    </script>
+    <!--  this script must come after the html elements have been defined  -->
+    <script type="text/javascript" th:src="@{/js/room.js}"></script>
 
 
     </body>

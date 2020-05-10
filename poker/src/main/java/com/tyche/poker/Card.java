@@ -1,5 +1,9 @@
 package com.tyche.poker;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
 
 import java.security.SecureRandom;
@@ -8,94 +12,83 @@ import java.util.*;
 public class Card {
 
 
-    enum Suit {
-        HEARTS,
-        SPADES,
-        CLUBS,
-        DIAMONDS
-    }
+    final String[] suits = {"♣", "♠", "♥", "♦"};
 
 
-    enum Rank {
-        ACE,
-        TWO,
-        THREE,
-        FOUR,
-        FIVE,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        TEN,
-        JACK,
-        QUEEN,
-        KING
-    }
+    final String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 
-    Rank rank;
-    Suit suit;
-    static Map<String, Integer> stringToValue = new HashMap<String, Integer>() {{
-        put("TWO", 2);
-        put("THREE", 3);
-        put("FOUR", 4);
-        put("FIVE", 5);
-        put("SIX", 6);
-        put("SEVEN", 7);
-        put("EIGHT", 8);
-        put("NINE", 9);
-        put("TEN", 10);
-        put("JACK", 11);
-        put("QUEEN", 12);
-        put("KING", 13);
-        put("ACE", 14);
-    }};
 
+    String rank;
+
+
+    String suit;
 
 
     Card() {
-        rank = randomEnum(Rank.class);
-        suit = randomEnum(Suit.class);
+        boolean cardUnique = false;
 
+        dupTest:
+            while(!cardUnique){
+                rank = ranks[new SecureRandom().nextInt(ranks.length)];
+                suit = suits[new SecureRandom().nextInt(suits.length)];
+                String cardTest = rank + suit;
+                for(String card : cardsInPlay){
+                    if(card.equals(cardTest)){
+                        System.out.println("Caught a duplicate: " + cardTest);
+                        continue dupTest;
+                    }
+                }
+                cardUnique = true;
+            }
     }
 
 
-    private static final SecureRandom random = new SecureRandom();
+    public static List<String> cardsInPlay = new ArrayList<>(); // prevent duplicate cards from being in play
 
 
-    public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
-        int x = random.nextInt(clazz.getEnumConstants().length);
-        return clazz.getEnumConstants()[x];
-    } // shameless, not my code...
+    public static List<User> compareCards(List<User> userList, PokerTable thisTable){
 
+        // out of all the hands, where user has not folded, which hand(s) win
+        // return the users with that hand(s)
 
-    // STEP #2: which card is highest
-    public static List<User> compareCards(List<User> userList){
-
-        // find highest value, return the user(s) with this value
-            // sort userList based on stringToValue[user.getCard01()] <- need to extract the rank!
-            // find the highest value
-            // return all users with this value
-
-        ArrayList<User> topDogs = new ArrayList<>();
-        int highestRank = 0;
-
-        for(User user : userList){
-            String[] rankValueList = user.getCard0().split(", ");
-            int rank = stringToValue.get(rankValueList[0]);
-            if(rank > highestRank) { highestRank = rank; }
-            System.out.println("highest rank: " + highestRank);
+        // what are the hands? 7 cards (table + user)
+        ArrayList<String[]> userHands = new ArrayList<>();
+        StringBuilder body = new StringBuilder("{ \"userHands\": [");
+        int i = 0;
+        for (User user : userList){
+            String thisHand = user.getCard0() + " " + user.getCard1() + " " + thisTable.getFlop0() + " " + thisTable.getFlop1() + " " + thisTable.getFlop2() + " " + thisTable.getTurn() + " " + thisTable.getRiver();
+            String thisUserHand = "{ \"uuid\": \"" + user.getUuid() + "\", \"cards\": \"" + thisHand + "\" }";
+            body.append(thisUserHand);
+            if(i < userList.size() - 1)  body.append(", ");
+            i++;
         }
 
-        for(User user:userList){
-            String[] rankValueList = user.getCard0().split(", ");
-            int rank = stringToValue.get(rankValueList[0]);
-            System.out.println("highest rank check: " + highestRank);
-            System.out.println("rank check: " + highestRank);
-            if(rank == highestRank) {
-                topDogs.add(user);
-                System.out.println("winner: " + user.getName());
+        body.append("] }");
+        System.out.println(body);
+
+        List<User> topDogs = new ArrayList<>();
+
+        // call tyche-evaluate to get the winning uuid(s)
+        Unirest.setTimeouts(0, 0);
+        try {
+            HttpResponse<String> response = Unirest.post("http://localhost:6969/winners")
+                    .header("Content-Type", "application/json")
+                    .body(body.toString())
+                    .asString();
+            String responseStr = response.getBody().substring(2,response.getBody().length()-2);
+            String[] dogs = responseStr.split(",");
+            for (String dog : dogs){
+                for (User user : userList){
+                    if (user.getUuid().equals(dog)) topDogs.add(user);
+                }
             }
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        for(User dog : topDogs){
+            System.out.println("winner: " + dog.getUuid());
         }
 
         return topDogs;
@@ -104,7 +97,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return rank + ", " + suit;
+        return rank + suit;
     }
 
 }

@@ -1,0 +1,373 @@
+
+
+html, body{
+    margin:0;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+#state-other-users{
+    width: 100%;
+    height: calc(100% * 0.382 - 100% * 0.236); /* golden ratio ** 3 */
+    background-color: rgb(28,28,30);
+    position: absolute;
+    z-index: 100;
+    color: rgb(242,242,247);
+}
+
+
+#state-other-users-table{
+    display: table;
+    margin: auto;
+    width: 80%;
+    height: 100%;
+}
+
+
+.turn-true{
+    color: #1de760;
+}
+
+
+.other-users{
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 100px; /* for some reason this is setting the width to be 100%/num users - wtf... */
+    /* ^ Keep it for now, it works! so does 300px so I don't know what the hell is going on */
+}
+
+
+.other-users-chips{
+    font-size: 10px;
+    opacity: 0.618;
+}
+
+
+#state-table{
+    top: calc(100% * 0.382 - 100% * 0.236);
+    width: 100%;
+    height: calc(100% * 0.236); /* golden ratio ** 2 */
+    background-color: rgb(44,44,46);
+    position: absolute;
+}
+
+
+#state-table-info{
+    color: rgb(242,242,247);
+    vertical-align: middle;
+    width: 25%;
+    height: 100%; 
+    left: 25%;
+    position: absolute;
+    display: table;
+}
+
+
+#state-table-info i{
+    opacity: 0.618;
+}
+
+
+#state-table-info span{
+    font-size: 18px;
+    padding: 40px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+}
+
+
+#state-table-hand{ 
+    left: 50%; 
+    height: calc(100% * 0.618);
+    margin: auto;
+    position: absolute;
+    bottom: 15%;
+    width: 100%;
+}
+
+
+.state-table-card{
+    height: 100%;
+    margin: 0 10px;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.25);
+}
+
+
+.down-true{
+    opacity: 0.618;
+}
+
+
+#state-this-user{
+    top: calc(100% * 0.382);
+    width: 100%;
+    height: calc(100% * 0.618); /* golden ratio ** 1 */
+    background-color: rgb(242,242,247);
+    position: absolute;
+}
+
+
+#state-this-user-info {
+    color: rgb(28,28,30);
+    width: 100%;
+    text-align: center;
+    top: calc(100% * 0.236 * 0.5);
+    position: absolute;
+    font-size: 24px;
+}
+
+
+#state-this-user-info-chips{
+    font-size: 16px;
+    opacity: 0.618;
+}
+
+
+#state-this-user-action{ 
+    position: absolute;
+    top: calc(100% * 0.382); 
+    left: calc(100% * 0.236); 
+    display: grid; 
+    color: rgb(28,28,30);
+    font-size: 16px;
+}
+
+
+#state-this-user-action span{ 
+    padding: 15px 0;
+    transition: 0.5s;
+}
+
+
+#state-this-user-action span:hover{
+    cursor: pointer;
+    transform: translateX(10px);
+}
+
+
+#state-this-user-action i{ 
+    padding: 0 10px;
+    opacity: 0.618;
+}
+
+
+#state-this-user-action input {
+    background-color: rgb(242,242,247);
+    letter-spacing: 1px;
+    margin-left: 20px;
+    border: none;
+}
+  
+  
+#state-this-user-action input:focus { outline: none; }
+
+
+#state-this-user-hand{
+    left: calc(100% * 0.618); 
+    height: calc(100% * 0.618);
+    margin: auto;
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+}
+
+
+.state-this-user-card{
+    height: 100%;
+    margin: 0 10px;
+    position: relative;
+    -webkit-box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
+    box-shadow: 4px 10px 5px 0px rgba(0,0,0,0.25);
+}
+
+
+#notification  {
+    visibility: hidden;
+    max-width: 30px;
+    height: 30px;
+    margin: auto;
+    background-color: #333;
+    color: rgb(242,242,247);
+    text-align: center;
+    border-radius: 2px;
+    position: fixed;
+    z-index: 1;
+    left: 0;right:0;
+    bottom: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
+}
+
+
+#notification  #img{
+	width: 30px;
+	height: 30px;
+    float: left;  
+    margin: 0 auto; 
+    box-sizing: border-box;   
+    background-color: #1a1a1a;
+    color: rgb(242,242,247);
+}
+
+
+#notification #img i{
+    line-height: 30px;
+    font-size: 16px;
+}
+
+
+#notification-desc{ 
+    color:rgb(242,242,247);
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 20px;
+}
+ 
+#notification.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 2s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
+}
+
+
+@-webkit-keyframes fadein {
+    from {bottom: -5px; opacity: 0;} 
+    to {bottom: 5px; opacity: 1;}
+}
+
+
+@keyframes fadein {
+    from {bottom: -5px; opacity: 0;}
+    to {bottom: 5px; opacity: 1;}
+}
+
+
+@-webkit-keyframes expand {
+    from {min-width: 30px} 
+    to {min-width: 250px}
+}
+
+
+@keyframes expand {
+    from {min-width: 30px}
+    to {min-width: 250px}
+}
+
+
+@-webkit-keyframes stay {
+    from {min-width: 250px} 
+    to {min-width: 250px}
+}
+
+
+@keyframes stay {
+    from {min-width: 250px}
+    to {min-width: 250px}
+}
+
+
+@-webkit-keyframes shrink {
+
+    from {min-width: 250px;} 
+    to {min-width: 30px;}
+}
+
+
+@keyframes shrink {
+    from {min-width: 250px;} 
+    to {min-width: 30px;}
+}
+
+
+@-webkit-keyframes fadeout {
+    from {bottom: 5px; opacity: 1;} 
+    to {bottom: -5px; opacity: 0;}
+}
+
+
+@keyframes fadeout {
+    from {bottom: 5px; opacity: 1;}
+    to {bottom: -5px; opacity: 0;}
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.618; }
+}
+
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.618; }
+}
+
+
+.fadeIn{
+    -webkit-animation: fadeIn 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: fadeIn 2s;
+}
+
+
+@keyframes fadeInUp {
+    from {transform: translate3d(0,40px,0);opacity:0;}
+    to {transform: translate3d(0,0,0);opacity: 1;}
+}
+
+
+@-webkit-keyframes fadeInUp {
+    from {transform: translate3d(0,40px,0);opacity:0;}
+    to {transform: translate3d(0,0,0);opacity: 1;}
+}
+
+
+.fadeInUp {
+    -webkit-animation: fadeInUp 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: fadeInUp 2s;
+}
+
+
+@keyframes flipCard {
+    0% {opacity:0;}
+    50% {opacity:0.5;transform: rotateY(-90deg);}
+    100% {opacity: 1;transform: rotateY(0deg);}
+}
+
+
+@-webkit-keyframes flipCard {
+    0% {opacity:0;}
+    50% {opacity:0.5;-webkit-transform: rotateY(-90deg);}
+    to {opacity: 1;-webkit-transform: rotateY(0deg);}
+}
+
+
+.flip-true {
+    -webkit-animation: flipCard 2s; /* Safari, Chrome and Opera > 12.1 */
+    animation: flipCard 2s linear;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.67,.15,.27,.79);
+}
+

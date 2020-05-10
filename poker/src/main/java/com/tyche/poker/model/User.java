@@ -2,8 +2,10 @@ package com.tyche.poker.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name="game_user") // User is reserved in POSTGRESQL
 public class User {
 
     @Id
@@ -15,6 +17,18 @@ public class User {
     private boolean myTurn;
     private boolean fold;
     private int myBet;
+
+
+    public User() {
+        this.card0 = "reverse";
+        this.card1 = "reverse";
+    }
+
+    public User(String uuid, String card0, String card1) {
+        this.uuid = uuid;
+        this.card0 = card0;
+        this.card1 = card1;
+    }
 
     public String getUuid() {
         return uuid;
