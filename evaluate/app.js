@@ -21,8 +21,8 @@ app.post('/winners', function (req, res) {
 })
 
 
-// Tell our app to listen on port 3000
-app.listen(3000, function (err) {
+// Tell our app to listen on port 6969
+app.listen(6969, function (err) {
   if (err) {
     throw err;
   }

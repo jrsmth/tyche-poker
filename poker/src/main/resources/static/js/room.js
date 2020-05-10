@@ -82,7 +82,7 @@ if(tableRiver != "reverse"){ flip(tableRiver, tableRiverElem.id) }
 var userTurn = document.getElementById("user-turn").innerHTML;
 console.log(userTurn);
 if(userTurn === "true"){
-    document.getElementById("this-user").className += " turn-true";
+    document.getElementById("this-user").className += " my-turn";
 } else {
     // remove class name and assign to correct user
     document.getElementById("state-this-user-action").style.display = "none";

@@ -72,7 +72,7 @@ public class Card {
         // call tyche-evaluate to get the winning uuid(s)
         Unirest.setTimeouts(0, 0);
         try {
-            HttpResponse<String> response = Unirest.post("http://localhost:3000/winners")
+            HttpResponse<String> response = Unirest.post("http://localhost:6969/winners")
                     .header("Content-Type", "application/json")
                     .body(body.toString())
                     .asString();

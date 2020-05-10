@@ -126,6 +126,13 @@ html, body{
 }
 
 
+.my-turn{
+   color: #01de77;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: rgb(28,28,30);
+}
+
+
 #state-this-user-info {
     color: rgb(28,28,30);
     width: 100%;
