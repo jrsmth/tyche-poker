@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'font-awesome/css/font-awesome.min.css'
 
 class App extends Component {
   state = {
     // isLoading: true,
-    groups: []
+    users: []
   };
-
-  // async componentDidMount() {
-  //   const response = await fetch('/users');
-  //   const body = await response.json();
-  //   this.setState({ groups: body, isLoading: false });
-  // }
 
   componentDidMount() {
     this.intervalId = setInterval(() => this.loadData(), 1000);
@@ -26,7 +21,7 @@ class App extends Component {
       fetch('/users')
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({groups: responseJson, isLoading: false});
+        this.setState({users: responseJson, isLoading: false});
       })
       .catch((error) => {
         console.error(error);
@@ -34,29 +29,52 @@ class App extends Component {
   }
 
   render() {
-    const {groups, isLoading} = this.state;
+    const {users, isLoading} = this.state;
 
     if (isLoading) {
-      return <p>Loading...</p>;
+      return <p>loading</p>;
     }
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <div className="App-intro">
-            <h2>JUG List</h2>
-            {groups.map(group =>
-              <div key={group.uuid}>
-                {group.name}
-              </div>
-            )}
-          </div>
-          {/* <div>
-            {this.state.time}
-          </div> */}
-        </header>
-      </div>
+
+      <html id = "room">
+
+        <head>
+          {/* <script src="https://kit.fontawesome.com/096f2be9ca.js" crossOrigin="anonymous"></script> REDUNDANT? */}
+        </head>
+
+        <body>
+
+         {/* Display Other User's State */}
+        <div id="state-other-users">
+            <div id="state-other-users-table">
+              {users.map(user =>
+                <div className="other-users" key={user.uuid}>
+                  <i className="fa fa-user"></i> {user.name} <br></br> <span className="other-users-chips fadeIn"> {user.chips} </span>
+                </div>
+              )}
+            </div>
+        </div>
+
+        {/* < Display Table State  */}
+        <div id="state-table">
+            <div id="state-table-info">
+                    <span id="state-table-info-pot" className="fadeInUp"> <i className="fas fa-piggy-bank"></i> 105 </span> 
+                    <span id="state-table-info-bet" className="fadeInUp"> <i className="fas fa-dollar-sign"></i> 15 </span> 
+            </div>
+            <div id="state-table-hand">
+                <img className="state-table-card" src="./res/PNG-cards-1.3/8_of_clubs.png"></img>
+                <img className="state-table-card" src="./res/PNG-cards-1.3/10_of_diamonds.png"></img>
+                <img className="state-table-card" src="./res/PNG-cards-1.3/4_of_diamonds.png"></img>
+                <img className="state-table-card flip-true" src="./res/PNG-cards-1.3/reverse.png"></img>
+                <img className="state-table-card down-true" src="./res/PNG-cards-1.3/reverse.png"></img>
+            </div>
+        </div>
+
+        </body>
+
+      </html>
+      
     );
   }
 }
