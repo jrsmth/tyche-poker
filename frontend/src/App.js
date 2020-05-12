@@ -96,7 +96,7 @@ class App extends Component {
 
             {/* Display This User's State  */}
             <div id="state-this-user">
-                <div id="state-this-user-info"> <i className="fa fa-user"></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
+                {/* <div id="state-this-user-info"> <i className="fa fa-user"></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
                 <div id="state-this-user-action">
                     <span id="state-this-user-action-check" onclick="makeTurn('check')"> <i className="fas fa-check"></i> check </span> 
                     <span id="state-this-user-action-call" onclick="makeTurn('check')"> <i className="fas fa-arrow-right"></i> call </span> 
@@ -107,7 +107,7 @@ class App extends Component {
                 <div id="state-this-user-hand">
                         <img className="state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
                         <img className="state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card1 + ".png"}></img>
-                </div>
+                </div> */}
             </div>
 
 
