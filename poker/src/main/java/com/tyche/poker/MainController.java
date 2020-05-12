@@ -96,6 +96,7 @@ public class MainController {
     }
 
 
+    
     public User getUser(String uuid) {
         return userRepository.findByUuid(uuid);
     }
@@ -429,6 +430,9 @@ public class MainController {
 
         return winners;
     }
+
+
+
 
 
 
