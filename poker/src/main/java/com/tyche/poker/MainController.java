@@ -90,11 +90,11 @@ public class MainController {
         // how do we refresh the page of /room?uuid= of users in the DB?
         updateState();
 
-        RedirectView rv = new RedirectView("/room");
-        rv.addStaticAttribute("uuid", uuid);
+        RedirectView rv = new RedirectView();
+        rv.setUrl("http://localhost:3000?uuid="+newUser.getUuid());
         return rv;
-    }
 
+    }
 
     
     public User getUser(String uuid) {
@@ -113,6 +113,22 @@ public class MainController {
     @GetMapping(path="/users")
     public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+
+    @GetMapping(path="/users/except/{uuid}")
+    public @ResponseBody List<User> getAllUsersExcept(@PathVariable String uuid) {
+        Iterable<User> allUsersIterable = userRepository.findAll();
+        List<User> allUsers = StreamSupport.stream(allUsersIterable.spliterator(), false).collect(Collectors.toList());
+        User thisUser = userRepository.findByUuid(uuid);
+        allUsers.remove(thisUser);
+        return allUsers;
+    }
+
+
+    @GetMapping(path="/users/{uuid}")
+    public @ResponseBody User getUserByUuid(@PathVariable String uuid) {
+        return userRepository.findByUuid(uuid);
     }
 
 
