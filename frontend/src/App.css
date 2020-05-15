@@ -112,9 +112,9 @@ html, body{
 }
 
 
-.down-true{
+/* .down-true{
   opacity: 0.618;
-}
+} */
 
 
 #state-this-user{
@@ -123,13 +123,6 @@ html, body{
   height: calc(100% * 0.618); /* golden ratio ** 1 */
   background-color: rgb(242,242,247);
   position: absolute;
-}
-
-
-.my-turn{
- color: #01de77;
- -webkit-text-stroke-width: 1px;
- -webkit-text-stroke-color: rgb(28,28,30);
 }
 
 
@@ -193,6 +186,11 @@ html, body{
 
 
 #state-this-user-action input:focus { outline: none; }
+
+
+.turn-false-action{
+  visibility: hidden;
+}
 
 
 #state-this-user-hand{

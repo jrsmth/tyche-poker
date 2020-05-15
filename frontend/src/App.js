@@ -13,7 +13,7 @@ class App extends Component {
     uuid: this.getUrlParameter('uuid'),
     users: [],
     tables: [{"uuid":null,"pot":0,"flop0":"reverse","flop1":"reverse","flop2":"reverse","turn":"reverse","river":"reverse","currentBet":0}],
-    thisUser: []
+    thisUser: [{"myTurn":false}]
   };
 
   componentDidMount() {
@@ -27,8 +27,12 @@ class App extends Component {
 
   loadData() {
 
+      var headers = {
+        "Authorization": "Basic Z29kOmNyZWF0ZWR0aGV3b3JsZGluc2V2ZW5kYXlz",
+      }
+
       // all users 
-      fetch('/users/except/'+this.state.uuid)
+      fetch('/users/except/'+this.state.uuid, { method: 'GET', headers: headers})
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({users: responseJson, isLoading: false});
@@ -38,7 +42,7 @@ class App extends Component {
       });
 
       // table
-      fetch('/tables')
+      fetch('/tables', { method: 'GET', headers: headers})
       .then((response) => response.json())
       .then((responseJson) => { this.setState({tables: responseJson, isLoading: false}) })
       .catch((error) => {
@@ -46,7 +50,7 @@ class App extends Component {
       });
 
       // thisUser 
-      fetch('/users/'+this.state.uuid)
+      fetch('/users/'+this.state.uuid, { method: 'GET', headers: headers})
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({thisUser: responseJson, isLoading: false});
@@ -54,6 +58,7 @@ class App extends Component {
       .catch((error) => {
         console.error(error);
       });
+
   }
 
   getUrlParameter(name) {
@@ -67,7 +72,7 @@ class App extends Component {
     const {users, tables, thisUser, isLoading} = this.state;
 
     if (isLoading) {
-      return <p>loading</p>;
+      return <p>loading bitch</p>;
     }
 
     return (
@@ -87,7 +92,7 @@ class App extends Component {
                 <div id="state-other-users-table">
                   {users.map(user =>
                     <div className="other-users" key={user.uuid}>
-                      <i className="fa fa-user"></i> {user.name} <br></br> <span className="other-users-chips fadeIn"> {user.chips} </span>
+                      <i className={"fa fa-user turn-" + user.myTurn}></i> {user.name} <br></br> <span className="other-users-chips fadeIn"> {user.chips} </span>
                     </div>
                   )}
                 </div>
@@ -102,10 +107,10 @@ class App extends Component {
                   </div>
 
                   <div id="state-table-hand">
-                      <img className="state-table-card" src={"./res/PNG-cards-1.3/" + table.flop0 + ".png"}></img>
-                      <img className="state-table-card" src={"./res/PNG-cards-1.3/" + table.flop1 + ".png"}></img>
-                      <img className="state-table-card" src={"./res/PNG-cards-1.3/" + table.flop2 + ".png"}></img>
-                      <img className="state-table-card flip-true" src={"./res/PNG-cards-1.3/" + table.turn + ".png"}></img>
+                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop0 + ".png"}></img>
+                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop1 + ".png"}></img>
+                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop2 + ".png"}></img>
+                      <img className="state-table-card down-true flip-true" src={"./res/PNG-cards-1.3/" + table.turn + ".png"}></img>
                       <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.river + ".png"}></img>
                   </div>
                 </div>)}
@@ -114,8 +119,8 @@ class App extends Component {
 
             {/* Display This User's State  */}
             <div id="state-this-user">
-                <div id="state-this-user-info"> <i className="fa fa-user"></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
-                <div id="state-this-user-action">
+                <div id="state-this-user-info"> <i className={"fa fa-user turn-"+thisUser.myTurn}></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
+                <div id="state-this-user-action" className = {"turn-" + thisUser.myTurn + "-action"}>
                     <span id="state-this-user-action-check" onclick="makeTurn('check')"> <i className="fas fa-check"></i> check </span> 
                     <span id="state-this-user-action-call" onclick="makeTurn('check')"> <i className="fas fa-arrow-right"></i> call </span> 
                     <span id="state-this-user-action-raise" onclick="makeTurn('check')"> <i className="fas fa-arrow-up"></i> raise <input type="text" value="0"></input> </span> 
