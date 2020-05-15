@@ -13,7 +13,7 @@ class App extends Component {
     uuid: this.getUrlParameter('uuid'),
     users: [],
     tables: [{"uuid":null,"pot":0,"flop0":"reverse","flop1":"reverse","flop2":"reverse","turn":"reverse","river":"reverse","currentBet":0}],
-    thisUser: [{"myTurn":false}]
+    thisUser: [{"card0": "reverse", "card1": "reverse", "myTurn":false}]
   };
 
   componentDidMount() {
@@ -107,11 +107,11 @@ class App extends Component {
                   </div>
 
                   <div id="state-table-hand">
-                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop0 + ".png"}></img>
-                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop1 + ".png"}></img>
-                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop2 + ".png"}></img>
-                      <img className="state-table-card down-true flip-true" src={"./res/PNG-cards-1.3/" + table.turn + ".png"}></img>
-                      <img className="state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.river + ".png"}></img>
+                      <img id="flop0" className="card state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop0 + ".png"}></img>
+                      <img id="flop1" className="card state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop1 + ".png"}></img>
+                      <img id="flop2" className="card state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.flop2 + ".png"}></img>
+                      <img id="turn" className="card state-table-card down-true" src={"./res/PNG-cards-1.3/" + table.turn + ".png"}></img>
+                      <img id="river" className="card state-table-card down-true flip-true" src={"./res/PNG-cards-1.3/" + table.river + ".png"}></img>
                   </div>
                 </div>)}
               </div>
@@ -128,8 +128,8 @@ class App extends Component {
                     <span id="state-this-user-action-allin" onclick="makeTurn('check')"> <i className="fas fa-rocket"></i> all in </span> 
                 </div>
                 <div id="state-this-user-hand">
-                        <img className="state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
-                        <img className="state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card1 + ".png"}></img>
+                        <img id="card0" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
+                        <img id="card1" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card1 + ".png"}></img>
                 </div>
             </div>
 
