@@ -202,14 +202,18 @@ public class MainController {
     }
 
 
-    @PostMapping(path = "/turn")
-    public RedirectView makeTurn(@RequestBody String uuid_action_betValue) {
+    @PostMapping(path = "/turn", consumes = "application/json")
+    public RedirectView makeTurn(@RequestBody TurnRequest turnPayload) {
 
         // extract uuid, action & betValue
 //         uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
-        String uuid = uuid_action_betValue.substring(5,41);
-        String action = uuid_action_betValue.substring(49,53);
-        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
+//        String uuid = uuid_action_betValue.substring(5,41);
+//        String action = uuid_action_betValue.substring(49,53);
+//        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
+
+        String uuid = turnPayload.getUuid();
+        String action = turnPayload.getAction();
+        int betValue = Integer.parseInt(turnPayload.getBetValue());
 
 
 //        int betValue = Integer.parseInt(turnPayload.getBetValue());
@@ -379,7 +383,7 @@ public class MainController {
             User nextUser = allUsersList.get(index + 1);
             nextUser.setMyTurn(true);
             if (nextUser.getMyBet() > 0 && nextUser.getMyBet() >= thisTable.getCurrentBet()){
-                makeTurn("uuid="+nextUser.getUuid()+"&action=null&betValue=0"); // dud call!
+                makeTurn(new TurnRequest(uuid, "null", "0")); // dud call!
             }
             userRepository.save(nextUser);
         }
@@ -394,12 +398,14 @@ public class MainController {
         }
 
 
-        System.out.println("redirect to room?");
-        // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
-        RedirectView rv = new RedirectView("/room");
-        rv.addStaticAttribute("uuid", uuid);
-        return rv;
+//        System.out.println("redirect to room?");
+//        // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
+//        RedirectView rv = new RedirectView("/room");
+//        rv.addStaticAttribute("uuid", uuid);
 
+        RedirectView rv = new RedirectView();
+        rv.setUrl("http://localhost:3000?uuid="+thisUser.getUuid());
+        return rv;
     }
 
 
