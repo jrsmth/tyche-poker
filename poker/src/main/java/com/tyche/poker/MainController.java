@@ -202,18 +202,18 @@ public class MainController {
     }
 
 
-    @PostMapping(path = "/turn", consumes = "application/json")
-    public RedirectView makeTurn(@RequestBody TurnRequest turnPayload) {
+    @RequestMapping(path = "/turn", method = RequestMethod.POST)
+    public RedirectView makeTurn(@RequestParam String uuid_action_betValue) {
 
         // extract uuid, action & betValue
 //         uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
-//        String uuid = uuid_action_betValue.substring(5,41);
-//        String action = uuid_action_betValue.substring(49,53);
-//        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
+        String uuid = uuid_action_betValue.substring(5,41);
+        String action = uuid_action_betValue.substring(49,53);
+        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
 
-        String uuid = turnPayload.getUuid();
-        String action = turnPayload.getAction();
-        int betValue = Integer.parseInt(turnPayload.getBetValue());
+//        String uuid = turnPayload.getUuid();
+//        String action = turnPayload.getAction();
+//        int betValue = Integer.parseInt(turnPayload.getBetValue());
 
 
 //        int betValue = Integer.parseInt(turnPayload.getBetValue());
@@ -383,7 +383,8 @@ public class MainController {
             User nextUser = allUsersList.get(index + 1);
             nextUser.setMyTurn(true);
             if (nextUser.getMyBet() > 0 && nextUser.getMyBet() >= thisTable.getCurrentBet()){
-                makeTurn(new TurnRequest(uuid, "null", "0")); // dud call!
+//                makeTurn(new TurnRequest(uuid, "null", "0")); // dud call!
+                makeTurn("uuid=" + uuid + "&action=null&betValue=0"); // dud call!
             }
             userRepository.save(nextUser);
         }

@@ -95,24 +95,6 @@ class App extends Component {
     }, 5000);
   }
 
-  makeTurn(action){
-    console.log("hITTY mcFITty")
-    var betValue = 0
-    if(action = "raise") betValue = this.raise 
-
-    const data = JSON.stringify({"uuid": this.state.uuid,"action": action, "description": betValue,});
-    const configAxios = {headers: {'Content-Type': 'application/json'}};
-
-    axios.post('http://localhost:8080/turn', data, configAxios)
-    .then((res) => {
-      this.date.description = res.data;
-      console.log(res);
-    })
-    .catch((err) => {
-      console.warn('error during http call', err);
-    });
-  }
-
   render() {
     const {users, tables, thisUser, isLoading} = this.state;
 
@@ -170,50 +152,50 @@ class App extends Component {
                 <div id="state-this-user-info"> <i className={"fa fa-user turn-"+thisUser.myTurn}></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
                 <div id="state-this-user-action" className = {"turn-" + thisUser.myTurn + "-action"}>
                     <span id="state-this-user-action-check">
-                            <form className="" action="" method="post">
+                            <form className="" action="http:/localhost:8080/turn" method="post">
                                 <input type="hidden" className="check uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="check" name="action" value="chec"></input> {/* must be four char's  */}
+                                <input type="hidden" className="check" name="action" value="chec"></input> {/* must be four char's */}
                                 <i className="fas fa-check"></i>
-                                <input type="submit" value="check" onClick="makeTurn('chec')"></input>
+                                <input type="submit" value="check"></input>
                                 <input type="hidden" className="check" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-call">
-                            <form className="" action="" method="post">
+                            <form className="" action="http:/localhost:8080/turn" method="post">
                                 <input type="hidden" className="call uuid" name="uuid" value=""></input>
                                 <input type="hidden" className="call" name="action" value="call"></input>
                                 <i className="fas fa-arrow-right"></i>
-                                <input type="submit" value="call" onClick="makeTurn('call')"></input>
+                                <input type="submit" value="call"></input>
                                 <input type="hidden" className="call" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-raise">
-                            <form className="" action="" method="post">
+                            <form className="" action="http:/localhost:8080/turn" method="post">
                                 <input type="hidden" className="raise uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="raise" name="action" value="rais"></input> {/* must be four char's  */}
+                                <input type="hidden" className="raise" name="action" value="rais"></input> {/* must be four char's */}
                                 <i className="fas fa-arrow-up"></i>
-                                <input type="submit" value="raise" onClick="makeTurn('rais')"></input>
+                                <input type="submit" value="raise"></input>
                                 <input type="text" className="raise" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-fold">
-                            <form className="" action="" method="post">
+                            <form className="" action="http:/localhost:8080/turn" method="post">
                                 <input type="hidden" className="fold uuid" name="uuid" value=""></input>
                                 <input type="hidden" className="fold" name="action" value="fold"></input>
                                 <i className="fas fa-arrow-down"></i>
-                                <input type="submit" value="fold" onClick="makeTurn('fold')"></input>
-                                <input type="hidden" className="fold" name="betValue" value="0" ref={this.raise}></input>
+                                <input type="submit" value="fold"></input>
+                                <input type="hidden" className="fold" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-allin">
-                            <form className="" action="" method="post">
+                            <form className="" action="http:/localhost:8080/turn" method="post">
                                 <input type="hidden" className="allin uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="allin" name="action" value="alli"></input> {/* must be four char's  */}
+                                <input type="hidden" className="allin" name="action" value="alli"></input> {/* must be four char's */}
                                 <i className="fas fa-rocket"></i>
-                                <input type="submit" value="allin" onclick="makeTurn('alli')"></input>
+                                <input type="submit" value="allin"></input>
                                 <input type="hidden" className="allin" name="betValue" value="0"></input>
                             </form>
-                    </span> 
+                    </span>
                 </div>
                 <div id="state-this-user-hand">
                         <img id="card0" ref="card0" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
