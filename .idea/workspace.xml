@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="952fd557-03fd-485f-becb-158811adeb13" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/requests/TurnRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/turn/TurnRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/poker/src/main/java/com/tyche/poker/model/User.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

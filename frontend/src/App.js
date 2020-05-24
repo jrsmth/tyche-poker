@@ -31,7 +31,7 @@ class App extends Component {
 
   componentDidMount() {
     this.loadData(true);
-    this.intervalId = setInterval(() => this.loadData(false), 5000);
+    this.intervalId = setInterval(() => this.loadData(false), 2500);
   }
 
   componentWillUnmount() {

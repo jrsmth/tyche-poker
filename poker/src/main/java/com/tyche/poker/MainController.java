@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.security.SecureRandom;
+import javax.sound.sampled.SourceDataLine;
 
 import static com.tyche.poker.Card.cardsInPlay;
 import static com.tyche.poker.Card.compareCards;
@@ -186,7 +188,12 @@ public class MainController {
         Iterable<User> currentUsersIterable = getAllUsers();
         List<User> currentUsers = StreamSupport.stream(currentUsersIterable.spliterator(), false).collect(Collectors.toList());
 
-        currentUsers.get(0).setMyTurn(true); // first player always bet first, MVP
+        // currentUsers.get(0).setMyTurn(true); // first player always bet first, MVP
+        int index = new SecureRandom().nextInt(currentUsers.size());
+        currentUsers.get(index).setMyTurn(true); // rotate randomly
+        // test
+        System.out.println("bets first: " + currentUsers.get(index).getName());
+
 
         for(User user : currentUsers){
             user.setCard0((new Card()).toString());
@@ -321,6 +328,7 @@ public class MainController {
                     // RedirectView rv = new RedirectView("/room");
                     // rv.addStaticAttribute("uuid", uuid);
                     // return rv;
+                    return new TurnResponse(uuid, action, betValue, user.getName() + " to bet");
                 }
             }
 
@@ -370,13 +378,31 @@ public class MainController {
                 nextUser.setMyTurn(true);
                 userRepository.save(nextUser);
                 pokerTableRepository.save(thisTable);
-            } else if (thisTable.getRiver().equals("reverse")){
+            } else {
                 endTurn(thisTable);
                 for(User user:allUsersList){
                     user.setMyBet(0);
                 }
-                User nextUser = allUsersList.get(0);
-                userRepository.save(nextUser);
+
+                // User 0 bets all the time
+                // User nextUser = allUsersList.get(0);
+                // userRepository.save(nextUser);
+
+                // Users rotate each round - the shit below does not work
+                // User currentFirstBetter = allUsersList.get(0);
+                // String uuidFB = currentFirstBetter.getUuid();
+                // int chipsFB = currentFirstBetter.getChips();
+                // String nameFB = currentFirstBetter.getName();
+                // System.out.println("current FB: " + nameFB);
+                // deleteUserByName(nameFB);
+                // System.out.println("confirm delete: " + userRepository.findAll().toString());
+                // userRepository.save(new User(uuidFB, nameFB, chipsFB));
+
+                // // test
+                // Iterable<User> currentUsersIterableT = getAllUsers();
+                // List<User> currentUsersT = StreamSupport.stream(currentUsersIterableT.spliterator(), false).collect(Collectors.toList());
+                // System.out.println("new FB: " + currentUsersT.get(0).getName());
+
                 nextTurn = true;
             }
         } else{
