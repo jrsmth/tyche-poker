@@ -15,6 +15,8 @@ class App extends Component {
     this.notificationI = React.createRef();
     this.notificationDesc = React.createRef();
     this.raise = React.createRef();
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   state = {
@@ -22,8 +24,10 @@ class App extends Component {
     uuid: this.getUrlParameter('uuid'),
     users: [],
     tables: [{"uuid":null,"pot":0,"flop0":"reverse","flop1":"reverse","flop2":"reverse","turn":"reverse","river":"reverse","currentBet":0}],
-    thisUser: [{"card0": "reverse", "card1": "reverse", "myTurn":false}]
+    thisUser: [{"card0": "reverse", "card1": "reverse", "myTurn":false}],
+    betValue: 0
   };
+
 
   componentDidMount() {
     this.loadData(true);
@@ -95,6 +99,38 @@ class App extends Component {
     }, 5000);
   }
 
+  handleChange(event, betValue) {
+    console.log("hit")
+    this.setState({betValue: betValue});
+    console.log("1st check:" + this.state.betValue)
+    console.log(this.raise.current)
+    return betValue;
+  }
+
+  handleSubmit(event, action) {
+    event.preventDefault();
+
+    let body = {
+      "action": action,
+      "uuid": this.state.uuid,
+      "betValue": this.state.betValue
+    }
+
+    console.log("send:" + body.betValue)
+
+
+    fetch('http://localhost:8080/turn', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body),
+    })
+    .then((response) => console.log(response.json()))
+  }
+
+
   render() {
     const {users, tables, thisUser, isLoading} = this.state;
 
@@ -152,54 +188,41 @@ class App extends Component {
                 <div id="state-this-user-info"> <i className={"fa fa-user turn-"+thisUser.myTurn}></i> {thisUser.name} <br></br> <span id = "state-this-user-info-chips" className="fadeIn"> {thisUser.chips} </span> </div>
                 <div id="state-this-user-action" className = {"turn-" + thisUser.myTurn + "-action"}>
                     <span id="state-this-user-action-check">
-                            <form className="" action="http:/localhost:8080/turn" method="post">
-                                <input type="hidden" className="check uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="check" name="action" value="chec"></input> {/* must be four char's */}
+                            <form className="" onSubmit={ (e) => this.handleSubmit(e, 'check')} method="post">
                                 <i className="fas fa-check"></i>
                                 <input type="submit" value="check"></input>
-                                <input type="hidden" className="check" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-call">
-                            <form className="" action="http:/localhost:8080/turn" method="post">
-                                <input type="hidden" className="call uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="call" name="action" value="call"></input>
+                            <form className="" onSubmit={ (e) => this.handleSubmit(e, 'call')} method="post">
                                 <i className="fas fa-arrow-right"></i>
                                 <input type="submit" value="call"></input>
-                                <input type="hidden" className="call" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-raise">
-                            <form className="" action="http:/localhost:8080/turn" method="post">
-                                <input type="hidden" className="raise uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="raise" name="action" value="rais"></input> {/* must be four char's */}
+                            <form className="" onSubmit={ (e) => this.handleSubmit(e, 'raise')} method="post">
                                 <i className="fas fa-arrow-up"></i>
                                 <input type="submit" value="raise"></input>
-                                <input type="text" className="raise" name="betValue" value="0"></input>
+                                <input type="text" value={this.state.betValue} onChange={(e) => {this.setState({betValue: e.target.value}); console.log("e: " + e.target.value)}} ref={this.raise}></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-fold">
-                            <form className="" action="http:/localhost:8080/turn" method="post">
-                                <input type="hidden" className="fold uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="fold" name="action" value="fold"></input>
+                            <form className="" onSubmit={ (e) => this.handleSubmit(e, 'fold')} method="post">
                                 <i className="fas fa-arrow-down"></i>
                                 <input type="submit" value="fold"></input>
-                                <input type="hidden" className="fold" name="betValue" value="0"></input>
                             </form>
                     </span>
                     <span id="state-this-user-action-allin">
-                            <form className="" action="http:/localhost:8080/turn" method="post">
-                                <input type="hidden" className="allin uuid" name="uuid" value=""></input>
-                                <input type="hidden" className="allin" name="action" value="alli"></input> {/* must be four char's */}
+                            <form className="" onSubmit={ (e) => this.handleSubmit(e, 'allin')} method="post">
                                 <i className="fas fa-rocket"></i>
                                 <input type="submit" value="allin"></input>
-                                <input type="hidden" className="allin" name="betValue" value="0"></input>
                             </form>
                     </span>
+                  
                 </div>
                 <div id="state-this-user-hand">
-                        <img id="card0" ref="card0" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
-                        <img id="card1" ref="card1" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card1 + ".png"}></img>
+                        <img id="card0" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card0 + ".png"}></img>
+                        <img id="card1" className="card state-this-user-card" src={"./res/PNG-cards-1.3/" + thisUser.card1 + ".png"}></img>
                 </div>
             </div>
 

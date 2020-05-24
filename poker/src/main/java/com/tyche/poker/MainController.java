@@ -2,7 +2,8 @@ package com.tyche.poker;
 
 import com.tyche.poker.model.PokerTable;
 import com.tyche.poker.model.User;
-import com.tyche.poker.requests.TurnRequest;
+import com.tyche.poker.turn.TurnRequest;
+import com.tyche.poker.turn.TurnResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -202,21 +203,22 @@ public class MainController {
     }
 
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(path = "/turn", method = RequestMethod.POST)
-    public RedirectView makeTurn(@RequestParam String uuid_action_betValue) {
+//    public RedirectView makeTurn(@RequestParam String uuid_action_betValue) {
+    public @ResponseBody TurnResponse makeTurn(@RequestBody TurnRequest turnPayload) {
+
 
         // extract uuid, action & betValue
 //         uuid=eea3d544-1b9a-4e55-8a61-663a9cf9c99d&action=rais&betValue=10
-        String uuid = uuid_action_betValue.substring(5,41);
-        String action = uuid_action_betValue.substring(49,53);
-        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
+//        String uuid = uuid_action_betValue.substring(5,41);
+//        String action = uuid_action_betValue.substring(49,53);
+//        int betValue = Integer.parseInt(uuid_action_betValue.substring(63));
 
-//        String uuid = turnPayload.getUuid();
-//        String action = turnPayload.getAction();
-//        int betValue = Integer.parseInt(turnPayload.getBetValue());
+        String uuid = turnPayload.getUuid();
+        String action = turnPayload.getAction();
+        int betValue = Integer.parseInt(turnPayload.getBetValue());
 
-
-//        int betValue = Integer.parseInt(turnPayload.getBetValue());
 
         // update the state of this user and that of the table
         User thisUser = getUser(uuid);
@@ -225,6 +227,8 @@ public class MainController {
         Iterable<PokerTable> thisTableIter = getAllTables();
         List<PokerTable> thisTableList = StreamSupport.stream(thisTableIter.spliterator(), false).collect(Collectors.toList());
         PokerTable thisTable = thisTableList.get(0);
+
+        System.out.println("action: " + action);
 
         switch(action){
             case "fold":
@@ -242,11 +246,10 @@ public class MainController {
                     }
                 } catch (Exception e) {
                     thisUser.setMyTurn(true);
-                    RedirectView rv = new RedirectView("/turn/invalid");
-                    return rv;
+                    return new TurnResponse(uuid, action, betValue, "error!!!");
                 }
                 break;
-            case "chec":
+            case "check":
                 System.out.println("hit0");
                     try {
                         if(thisTable.getCurrentBet() == 0){
@@ -258,11 +261,10 @@ public class MainController {
                         }
                     } catch (Exception e) {
                         thisUser.setMyTurn(true);
-                        RedirectView rv = new RedirectView("/turn/invalid");
-                        return rv;
+                        return new TurnResponse(uuid, action, betValue, "error!!!");
                     }
                 break;
-            case "rais":
+            case "raise":
                 System.out.println("hit0");
                 try { // also need to add a rule: a raise must take your current bet for this betting turn to be > the current table bet!
                     if(thisUser.getChips() - betValue >= 0 && betValue > thisTable.getCurrentBet()){
@@ -277,11 +279,10 @@ public class MainController {
                     }
                 } catch (Exception e) {
                     thisUser.setMyTurn(true);
-                    RedirectView rv = new RedirectView("/turn/invalid");
-                    return rv;
+                    return new TurnResponse(uuid, action, betValue, "error!!!");
                 }
                 break;
-            case "alli":
+            case "allin":
                 if(thisUser.getChips() > thisTable.getCurrentBet()){
                     thisUser.setMyBet(thisUser.getChips());
                     thisUser.setChips(0);
@@ -316,10 +317,10 @@ public class MainController {
                     // save and return to room (however how do we skip user's who don't need to bet again)
                     userRepository.save(thisUser);
                     updateState();
-                    // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
-                    RedirectView rv = new RedirectView("/room");
-                    rv.addStaticAttribute("uuid", uuid);
-                    return rv;
+                    // // RETURN A REDIRECT BACK TO THE PAGE THIS REQUEST CAME FROM!
+                    // RedirectView rv = new RedirectView("/room");
+                    // rv.addStaticAttribute("uuid", uuid);
+                    // return rv;
                 }
             }
 
@@ -383,8 +384,8 @@ public class MainController {
             User nextUser = allUsersList.get(index + 1);
             nextUser.setMyTurn(true);
             if (nextUser.getMyBet() > 0 && nextUser.getMyBet() >= thisTable.getCurrentBet()){
-//                makeTurn(new TurnRequest(uuid, "null", "0")); // dud call!
-                makeTurn("uuid=" + uuid + "&action=null&betValue=0"); // dud call!
+                makeTurn(new TurnRequest(uuid, "null", "0")); // dud call!
+//                makeTurn("uuid=" + uuid + "&action=null&betValue=0"); // dud call!
             }
             userRepository.save(nextUser);
         }
@@ -404,9 +405,7 @@ public class MainController {
 //        RedirectView rv = new RedirectView("/room");
 //        rv.addStaticAttribute("uuid", uuid);
 
-        RedirectView rv = new RedirectView();
-        rv.setUrl("http://localhost:3000?uuid="+thisUser.getUuid());
-        return rv;
+                    return new TurnResponse(uuid, action, betValue, "success");
     }
 
 

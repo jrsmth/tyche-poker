@@ -1,4 +1,4 @@
-package com.tyche.poker.requests;
+package com.tyche.poker.turn;
 
 public class TurnRequest {
 
