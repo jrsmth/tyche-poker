@@ -28,7 +28,13 @@ Status (May 2020)
 ## Design
 
 Architecture
-* The application consists of 3 microservices (the frontend - React JS, the backend 'poker' - Spring Boot, the hand evaluator service 'evaluate' - Node JS) and is designed to run on Cloud Foundry. If I was running in production, I would use my CF trial account.
+* The application consists of 3 microservices (the frontend - React JS, the backend 'poker' - Spring Boot, the hand evaluator service 'evaluate' - Node JS) and is designed to run on Cloud Foundry. 
+
+<br>
+
+<img width="681" alt="Screen Shot 2020-05-25 at 13 32 46" src="https://user-images.githubusercontent.com/34093915/82813148-62e4e700-9e8c-11ea-884c-934d7940df19.png">
+
+<br>
 
 inc topic
 inc archiecture
