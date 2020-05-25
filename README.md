@@ -1,4 +1,5 @@
 # tyche-poker
+Contents - Overview, Design, How to Use
 
 
 Me and the bois like to play Poker. In the COVID-19 lockdown of 2020, we have been playing Poker online using a combo of (http://playingcards.io + http://playingcards.io). With my new found Spring skills, I thought that I could make something better. 
@@ -26,6 +27,7 @@ An example screen shot from the game
 
 ## Design
 inc topic
+inc archiecture
 inc EBI
 
 Cover these areas:
