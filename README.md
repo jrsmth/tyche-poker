@@ -23,8 +23,6 @@ Status (May 2020)
 
 <br>
 <br>
-<br>
-<br>
 
 ## Design
 
@@ -53,13 +51,14 @@ Topics:
 * POSTMAN :white_check_mark:
 * AIML :x:, Maths :x:
 
+<br>
+
 See Jira Project for what is left to be developed:
 https://jrs97-dev.atlassian.net/jira/software/projects/TYC0/boards/1/roadmap
 
 <br>
 <br>
-<br>
-<br>
+
 
 ## How to Use
 
