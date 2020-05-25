@@ -71,7 +71,12 @@ Deployment
 * CF instructions: deploy the apps and cs + bs a MySQL DB (tyche-db) to Spring app
 
 Gameplay
-* discord, etc, POSTMAN, API's
+* I recommend you use Discord to chat with the poeple you are playing with
+* API's
+  * Wipe Game
+     * curl --location --request GET 'localhost:8080/start'
+     * curl --location --request GET 'localhost:8080/flood' \ --header 'Authorization: Basic Z29kOmNyZWF0ZWR0aGV3b3JsZGluc2V2ZW5kYXlz' \
+  * more already set up in my POSTMAN: https://www.getpostman.com/collections/c66419d95e9358739bef 
 
 Current Git Flow
 * git pull at the start of every session
