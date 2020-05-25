@@ -72,10 +72,10 @@ class App extends Component {
         console.error(error);
       });
 
-      if(!first){
-        // simulate notification
-        this.showNotification("OWEN BETS 15", "fa fa-check-circle", "good");
-      }
+      // if(!first){
+      //   // simulate notification
+      //   this.showNotification("OWEN BETS 15", "fa fa-check-circle", "good");
+      // }
 
   }
 
@@ -127,7 +127,10 @@ class App extends Component {
       },
       body: JSON.stringify(body),
     })
-    .then((response) => console.log(response.json()))
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.showNotification(responseJson.content, responseJson.icon, responseJson.mood);
+    })
   }
 
 

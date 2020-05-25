@@ -253,7 +253,7 @@ public class MainController {
                     }
                 } catch (Exception e) {
                     thisUser.setMyTurn(true);
-                    return new TurnResponse(uuid, action, betValue, "error!!!");
+                    return new TurnResponse(action + " invalid", "fas fa-times-circle", "bad");
                 }
                 break;
             case "check":
@@ -268,7 +268,7 @@ public class MainController {
                         }
                     } catch (Exception e) {
                         thisUser.setMyTurn(true);
-                        return new TurnResponse(uuid, action, betValue, "error!!!");
+                        return new TurnResponse(action + " invalid", "fas fa-times-circle", "bad");
                     }
                 break;
             case "raise":
@@ -286,7 +286,7 @@ public class MainController {
                     }
                 } catch (Exception e) {
                     thisUser.setMyTurn(true);
-                    return new TurnResponse(uuid, action, betValue, "error!!!");
+                    return new TurnResponse(action + " invalid", "fas fa-times-circle", "bad");
                 }
                 break;
             case "allin":
@@ -328,7 +328,7 @@ public class MainController {
                     // RedirectView rv = new RedirectView("/room");
                     // rv.addStaticAttribute("uuid", uuid);
                     // return rv;
-                    return new TurnResponse(uuid, action, betValue, user.getName() + " to bet");
+                    return new TurnResponse("", "", "");
                 }
             }
 
@@ -431,8 +431,8 @@ public class MainController {
 //        RedirectView rv = new RedirectView("/room");
 //        rv.addStaticAttribute("uuid", uuid);
 
-                    return new TurnResponse(uuid, action, betValue, "success");
-    }
+        return new TurnResponse(action + " successful", "fa fa-check-circle", "good");
+}
 
 
     @GetMapping(path="/turn/invalid")

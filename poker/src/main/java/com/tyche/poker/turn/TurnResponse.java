@@ -2,48 +2,38 @@ package com.tyche.poker.turn;
 
 public class TurnResponse {
 
-    String uuid;
-    String action;
-    int betValue;
-    String status;
+    String content;
+    String icon;
+    String mood;
 
-    public TurnResponse(String uuid, String action, int betValue, String status){
-        this.uuid = uuid;
-        this.action = action;
-        this.betValue = betValue;
-        this.status = status;
+    public TurnResponse(String content, String icon, String mood){
+        this.content = content;
+        this.icon = icon;
+        this.mood = mood;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getContent() {
+        return content;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getAction() {
-        return action;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public int getBetValue() {
-        return betValue;
+    public String getMood() {
+        return mood;
     }
 
-    public void setBetValue(int betValue) {
-        this.betValue = betValue;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMood(String mood) {
+        this.mood = mood;
     }
 }
 
