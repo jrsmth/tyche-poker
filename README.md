@@ -1,5 +1,10 @@
 # tyche-poker
 
+<img width="1438" alt="Screen Shot 2020-05-25 at 13 00 25" src="https://user-images.githubusercontent.com/34093915/82811054-c7ea0e00-9e87-11ea-8015-c93f484b8e7e.png">
+
+<br>
+<br>
+
 Me and the bois like to play Poker. In the COVID-19 lockdown of 2020, we have been playing Poker online using a combo of (http://playingcards.io + http://playingcards.io). With my new found Spring skills, I thought that I could make something better. 
 
 Objectives
@@ -11,12 +16,6 @@ Status (May 2020)
 * Objectives 2 and 3 were achieved. 
 * Objective 1 did not happen. With a looming deadline to pass my Java OCA exam, I have had to park Tyche as it is. It is PRETTY MUCH done but it is not production ready. I have not tested it with other people and I atm I'm not going to. I have learnt TONNES and am intent of reusing lots of this code in future projects :)
 * Maybe I am using pragmatism as an excuse for non-perfection...
-
-<br>
-<br>
-
-<img width="1438" alt="Screen Shot 2020-05-25 at 13 00 25" src="https://user-images.githubusercontent.com/34093915/82811054-c7ea0e00-9e87-11ea-8015-c93f484b8e7e.png">
-An example screen shot from the game
 
 <br>
 <br>
