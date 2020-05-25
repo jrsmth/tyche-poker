@@ -66,8 +66,8 @@ Deployment
 * git clone https://github.com/JRSmiffy/tyche-poker.git
 * LocalHost instructions:
   * poker: cd tyche-poker/poker | mvn clean spring-boot:run
-  * frontend: cd tyche-poker/frontend | mvn clean spring-boot:run
-  * poker: cd tyche-poker/poker | mvn clean spring-boot:run
+  * frontend: cd tyche-poker/frontend/src | npm start
+  * poker: cd tyche-poker/evaluate | node app.js
 * CF instructions: deploy the apps and cs + bs a MySQL DB (tyche-db) to Spring app
 
 Gameplay
