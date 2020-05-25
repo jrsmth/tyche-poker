@@ -18,6 +18,7 @@ Objectives
 Status (May 2020)
 * Objectives 2 and 3 were achieved. 
 * Objective 1 did not happen. With a looming deadline to pass my Java OCA exam, I have had to park Tyche as it is. It is PRETTY MUCH done but it is not production ready. I have not tested it with other people and I atm I'm not going to. I have learnt TONNES and am intent of reusing lots of this code in future projects :)
+* I have very much reached the end of my tether in the time frame - I had 6 weeks to over on it (3 sprints). This worked out to probably 60 hours of focussed work.
 * Maybe I am using pragmatism as an excuse for non-perfection...
 
 <br>
@@ -40,37 +41,20 @@ Topics:
 * Security - Spring Security Basics :white_check_mark:
 * Monitoring - actuator :white_check_mark:, logger factory :white_check_mark:, ELK :x:
 * Testing - TDD :x:, JUNIT :x:
+* Best Practises - 12 factors :x:, REST :white_check_mark:, MVC :white_check_mark:, SOLID :x:, Good OOP :x:
+* JIRA - Best Practise :x:, Agile (fortnightly sprints, with plan, retro and demo) :white_check_mark:
+* MySQL+PostgreSQL - JPA/Hibernate :white_check_mark:, Best Practise (Lock it down in production, etc) :x:
+* Git - Branches :white_check_mark:, Best Practise :x:
+* IntelliJ + Visual Studio Code :white_check_mark:
+* Spring + Thymeleaf :white_check_mark:
+* HTML/JS/CSS :white_check_mark:
+* JS Frameworks - React JS :white_check_mark:, Node JS :white_check_mark:, Best Practise :x:
+* PaaS/CaaS - Cloud Foundry :x:, Google App Engine :x:, K8's :x:
+* POSTMAN :white_check_mark:
+* AIML :x:, Maths :x:
 
-
-ELK?
-
-Best Practises - 12 factors, rest, mvc, SOLID, Good OOP
-
-https://phauer.com/2015/restful-api-design-best-practices/
-
-https://spring.io/guides/tutorials/rest/
-
-JIRA + Agile Sprints (fortnightly, with plan, retro and demo)
-
-MYSQL - JPA/Hibernate - lock it down in production.
-
-Git
-
-branches, etc - map the whole flow
-
-IntelliJ and VSC
-
-Spring + Thymeleaf
-
-JavaScript/HTML/CSS - plus REACT + NODE?
-
-Cloud Foundry
-
-POSTMAN set up with API’s
-
-Could we do some AIML?
-
-Maths?
+See Jira Project for what is left to be developed:
+https://jrs97-dev.atlassian.net/jira/software/projects/TYC0/boards/1/roadmap
 
 <br>
 <br>
@@ -81,6 +65,6 @@ Maths?
 
 
 
-
+discord, git, postman/API, localhost, CF, gamsplay..
 
 
