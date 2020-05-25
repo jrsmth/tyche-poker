@@ -69,7 +69,12 @@ Gameplay
 * discord, etc, POSTMAN, API's
 
 Current Git Flow
-* this
+* git pull at the start of every session
+* git add -A, git commit -m "", git push at the end of every session
+* checkout a 'sprint branch' at the start of every sprint planning sesh (keep master demo ready)
+* work exclusively in this branch
+* merge the sprint branch with master and delete after the sprint demo
+* clear up the deleted sprint branches on each development machine
 
 
 
