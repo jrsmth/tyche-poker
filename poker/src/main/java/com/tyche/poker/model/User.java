@@ -30,6 +30,12 @@ public class User {
         this.card1 = card1;
     }
 
+    public User(String uuid, String name, int chips) {
+        this.uuid = uuid;
+        this.name = name;
+        this.chips = chips;
+    }
+
     public String getUuid() {
         return uuid;
     }
