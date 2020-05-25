@@ -63,7 +63,12 @@ https://jrs97-dev.atlassian.net/jira/software/projects/TYC0/boards/1/roadmap
 ## How to Use
 
 Deployment
-* CF, localhost
+* git clone https://github.com/JRSmiffy/tyche-poker.git
+* LocalHost instructions:
+  * poker: cd tyche-poker/poker | mvn clean spring-boot:run
+  * frontend: cd tyche-poker/frontend | mvn clean spring-boot:run
+  * poker: cd tyche-poker/poker | mvn clean spring-boot:run
+* CF instructions: deploy the apps and cs + bs a MySQL DB (tyche-db) to Spring app
 
 Gameplay
 * discord, etc, POSTMAN, API's
