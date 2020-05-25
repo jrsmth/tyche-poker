@@ -1,2 +1,73 @@
 # tyche-poker
-A poker game for me and the bois
+
+
+Me and the bois like to play Poker. In the COVID-19 lockdown of 2020, we have been playing Poker online using a combo of (http://playingcards.io + http://playingcards.io). With my new found Spring skills, I thought that I could make something better. 
+
+Objectives
+* to be able to play with my mates and replace our current Poker situation
+* to learn some new shizz and stretch my shkills
+* to have a bang-tidy project on my GitHub
+
+
+<img width="1438" alt="Screen Shot 2020-05-25 at 13 00 25" src="https://user-images.githubusercontent.com/34093915/82811054-c7ea0e00-9e87-11ea-8015-c93f484b8e7e.png">
+An example screen shot from the game
+
+
+## Design
+inc topic
+inc EBI
+
+Cover these areas:
+
+Security
+
+https://mkyong.com/spring-boot/spring-rest-spring-security-example/
+
+Testing - test-driven, J UNIT
+
+Monitoring 
+
+Spring Actuator (Actuator for health check: /health for health check… type: http?) https://www.baeldung.com/spring-boot-actuators
+
+Logger Factory - https://www.baeldung.com/spring-boot-logging
+
+ELK?
+
+Best Practises - 12 factors, rest, mvc, SOLID, Good OOP
+
+https://phauer.com/2015/restful-api-design-best-practices/
+
+https://spring.io/guides/tutorials/rest/
+
+JIRA + Agile Sprints (fortnightly, with plan, retro and demo)
+
+MYSQL - JPA/Hibernate - lock it down in production.
+
+Git
+
+branches, etc - map the whole flow
+
+IntelliJ and VSC
+
+Spring + Thymeleaf
+
+JavaScript/HTML/CSS - plus REACT + NODE?
+
+Cloud Foundry
+
+POSTMAN set up with API’s
+
+Could we do some AIML?
+
+Maths?
+
+
+
+
+## How to Use
+
+
+
+
+
+
