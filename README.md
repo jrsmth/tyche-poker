@@ -2,9 +2,10 @@
 
 Me and the bois like to play Poker. In the COVID-19 lockdown of 2020, we have been playing Poker online using a combo of (http://playingcards.io + http://playingcards.io). With my new found Spring skills, I thought that I could make something better. 
 
+<br>
+
 <img width="1438" alt="Screen Shot 2020-05-25 at 13 00 25" src="https://user-images.githubusercontent.com/34093915/82811054-c7ea0e00-9e87-11ea-8015-c93f484b8e7e.png">
 
-<br>
 <br>
 
 
