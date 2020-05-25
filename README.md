@@ -24,6 +24,10 @@ An example screen shot from the game
 <br>
 
 ## Design
+
+Architecture
+* The application consists of 3 microservices (the frontend - React JS, the backend 'poker' - Spring Boot, the hand evaluator service 'evaluate' - Node JS) and is designed to run on Cloud Foundry. If I was running in production, I would use my CF trial account.
+
 inc topic
 inc archiecture
 inc EBI
