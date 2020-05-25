@@ -36,23 +36,11 @@ Architecture
 
 <br>
 
-inc topic
-inc archiecture
-inc EBI
+Topics:
+* Security - Spring Security Basics :white_check_mark:
+* Monitoring - actuator :white_check_mark:, logger factory :white_check_mark:, ELK :x:
+* Testing - TDD :x:, JUNIT :x:
 
-Cover these areas:
-
-Security
-
-https://mkyong.com/spring-boot/spring-rest-spring-security-example/
-
-Testing - test-driven, J UNIT
-
-Monitoring 
-
-Spring Actuator (Actuator for health check: /health for health check… type: http?) https://www.baeldung.com/spring-boot-actuators
-
-Logger Factory - https://www.baeldung.com/spring-boot-logging
 
 ELK?
 
