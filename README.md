@@ -21,6 +21,8 @@ An example screen shot from the game
 
 <br>
 <br>
+<br>
+<br>
 
 ## Design
 inc topic
@@ -70,6 +72,8 @@ Could we do some AIML?
 
 Maths?
 
+<br>
+<br>
 <br>
 <br>
 
