@@ -62,8 +62,14 @@ https://jrs97-dev.atlassian.net/jira/software/projects/TYC0/boards/1/roadmap
 
 ## How to Use
 
+Deployment
+* CF, localhost
 
+Gameplay
+* discord, etc, POSTMAN, API's
 
-discord, git, postman/API, localhost, CF, gamsplay..
+Current Git Flow
+* this
+
 
 
