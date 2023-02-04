@@ -12,7 +12,7 @@
 
 ## Architecture
 * Frontend: React
-* Backend: Quarkus (Java)
+* Backend: Quarkus (Java), Node JS
 * Platform: Kubernetes (AWS EKS)
 
 <br>
