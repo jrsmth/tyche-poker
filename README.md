@@ -16,5 +16,5 @@
 <br>
 <br>
 
-### Tyche :: The Greek Goddess of Chance
+## Tyche :: Τύχη :: Goddess of Chance
 <img src="./res/tyche-statue.jpeg">
