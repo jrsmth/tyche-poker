@@ -1,5 +1,5 @@
 # tyche-poker
-*The best thing to come out of COVID-19* <br>
+*Socially distanced poker game* <br>
 ⚠️ Under Rewrite
 
 <br>
